@@ -11,6 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Company.Ordering.Domain\Company.Ordering.Domain.csproj" />
+    <ProjectReference Include="..\Company.Ordering.Infrastructure\Company.Ordering.Infrastructure.csproj" />
     <ProjectReference Include="..\Company.Ordering.ServiceDefaults\Company.Ordering.ServiceDefaults.csproj" />
   </ItemGroup>
 
