@@ -1,20 +1,24 @@
 ﻿using Company.Ordering.Domain;
+using Company.Ordering.Domain.OrderAggregate;
+using Microsoft.EntityFrameworkCore;
 
 namespace Company.Ordering.Infrastructure;
 
-public class OrdersRepository : IOrdersRepository
+public class OrdersRepository(OrderingDbContext uow) : IOrdersRepository
 {
+
+    public IUnitOfWork UnitOfWork => uow;
+
     public async Task CreateOrderAsync(Order order)
     {
-        //TODO
+        await uow.Orders.AddAsync(order);
     }
 
-    public async Task<Order> GetOrderAsync(int orderNumber)
+    public async Task<Order?> GetOrderAsync(int orderNumber)
     {
-        //UNDONE
-        return new Order
-        {
-            Number = orderNumber,
-        };
+        return await uow
+            .Orders
+            .Include(o => o.Products)
+            .SingleOrDefaultAsync(o => o.Number == orderNumber);
     }
 }

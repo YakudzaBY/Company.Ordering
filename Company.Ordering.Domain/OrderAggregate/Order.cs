@@ -1,10 +1,12 @@
-﻿namespace Company.Ordering.Domain;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Company.Ordering.Domain.OrderAggregate;
 
 public class Order
 {
     public int Number { get; set; }
 
-    public ICollection<Product> Products { get; set; }
+    public ICollection<OrderProduct> Products { get; set; }
 
     public string InvoiceAddress { get; set; }
 

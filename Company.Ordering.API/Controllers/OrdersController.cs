@@ -1,4 +1,4 @@
-﻿using Company.Ordering.Domain;
+﻿using Company.Ordering.Domain.OrderAggregate;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company.Ordering.API.Controllers;
@@ -7,10 +7,11 @@ namespace Company.Ordering.API.Controllers;
 [ApiController]
 public class OrdersController(IOrdersRepository ordersRepository) : ControllerBase
 {
-    [HttpPost()]
+    [HttpPost]
     public async Task<IActionResult> CreateOrderAsync(Order order)
     {
         await ordersRepository.CreateOrderAsync(order);
+        await ordersRepository.UnitOfWork.SaveChangesAsync();
         return Created();
     }
 

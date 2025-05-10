@@ -1,5 +1,6 @@
-using Company.Ordering.Domain;
+using Company.Ordering.Domain.OrderAggregate;
 using Company.Ordering.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,12 @@ builder.AddServiceDefaults();
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddSingleton<IOrdersRepository, OrdersRepository>();
+builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
+
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddDbContext<OrderingDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Ordering")));
 
 var app = builder.Build();
 
