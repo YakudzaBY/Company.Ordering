@@ -1,8 +1,5 @@
 @Company.Ordering.API_HostAddress = http://localhost:5186
 
-GET {{Company.Ordering.API_HostAddress}}/weatherforecast/
-Accept: application/json
-
 ### Succesfully create Order
 POST {{Company.Ordering.API_HostAddress}}/Orders
 Content-Type: application/json
