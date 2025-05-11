@@ -20,6 +20,7 @@ public static class Extensions
     {
         #region Serilog
         Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Information()
             .WriteTo.Console() // Optional: Log to console
             .WriteTo.File("logs/service-defaults-log.txt", rollingInterval: RollingInterval.Day) // Log to file
             .CreateLogger();
