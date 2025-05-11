@@ -1,17 +1,25 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 
 namespace Company.Ordering.Infrastructure.Tests;
 
 public abstract class InMemoryDbTest : IDisposable
 {
     private bool disposedValue;
+    private readonly SqliteConnection _connection;
     protected readonly OrderingDbContext _dbContext;
     public InMemoryDbTest()
     {
+        // Create an in-memory SQLite connection
+        _connection = new SqliteConnection("DataSource=:memory:");
+        _connection.Open();
+
         var dbContextOptions = new DbContextOptionsBuilder<OrderingDbContext>()
-            .UseInMemoryDatabase(nameof(CreateOrderTests))
+            .UseSqlite(_connection) // Use SQLite in-memory database
             .Options;
+
         _dbContext = new OrderingDbContext(dbContextOptions);
+        _dbContext.Database.EnsureCreated(); // Create the database schema
     }
 
     protected virtual void Dispose(bool disposing)
@@ -23,6 +31,8 @@ public abstract class InMemoryDbTest : IDisposable
                 //dispose managed state (managed objects)
                 _dbContext.Database.EnsureDeleted();
                 _dbContext.Dispose();
+                _connection.Close();
+                _connection.Dispose();
             }
 
             //free unmanaged resources (unmanaged objects) and override finalizer

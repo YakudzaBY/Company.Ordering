@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Company.Ordering.API\Company.Ordering.API.csproj" />
-    <ProjectReference Include="..\Company.Ordering.Infrastructure\Company.Ordering.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -10,7 +10,7 @@ public class ProductsRepositoryTests : InMemoryDbTest
 
     public ProductsRepositoryTests() : base()
     {
-        _product = new Product { Id = 12345, Stock = 2 };
+        _product = new Product { Id = 2, Stock = 2 };
         _dbContext.Products.Add(_product);
         _dbContext.SaveChanges();
 
@@ -32,7 +32,7 @@ public class ProductsRepositoryTests : InMemoryDbTest
 
     [Theory]
     [InlineData(1, 1, "Product must not be in stock as absent in db")]
-    [InlineData(12345, 3, "Product must not be in stock as stock is stock=2")]
+    [InlineData(2, 3, "Product must not be in stock as stock is stock=2")]
     public async Task NotInStockTestAsync(int productId, int stock, string message)
     {
         // Act
