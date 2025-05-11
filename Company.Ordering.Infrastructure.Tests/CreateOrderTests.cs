@@ -4,18 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Company.Ordering.Infrastructure.Tests;
 
-public class CreateOrderTests: IDisposable
+public class CreateOrderTests: InMemoryDbTest
 {
-
-    private readonly OrderingDbContext _dbContext;
-    public CreateOrderTests()
-    {
-        var dbContextOptions = new DbContextOptionsBuilder<OrderingDbContext>()
-            .UseInMemoryDatabase(nameof(CreateOrderTests))
-            .Options;
-        _dbContext = new OrderingDbContext(dbContextOptions);
-    }
-
     [Fact]
     public async Task CreateOrderTestAsync()
     {
@@ -37,11 +27,5 @@ public class CreateOrderTests: IDisposable
             .SingleOrDefaultAsync(o => o.Number == order.Number, CancellationToken.None);
 
         Assert.NotNull(orderFromDb);
-    }
-
-    public void Dispose()
-    {
-        _dbContext.Database.EnsureDeleted();
-        _dbContext.Dispose();
     }
 }

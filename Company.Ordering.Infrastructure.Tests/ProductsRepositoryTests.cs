@@ -1,27 +1,18 @@
 ﻿using Company.Ordering.Domain.ProductAggregate;
 using Company.Ordering.Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore;
 
 namespace Company.Ordering.Infrastructure.Tests;
 
-public class ProductsRepositoryTests : IDisposable
+public class ProductsRepositoryTests : InMemoryDbTest
 {
-    private readonly OrderingDbContext _dbContext;
     private readonly Product _product;
     private readonly ProductsRepository _productsRepository;
 
-    public ProductsRepositoryTests()
+    public ProductsRepositoryTests() : base()
     {
-        var options = new DbContextOptionsBuilder<OrderingDbContext>()
-            .UseInMemoryDatabase(databaseName: nameof(ProductsRepositoryTests))
-            .Options;
-
-        _dbContext = new OrderingDbContext(options);
-
         _product = new Product { Id = 12345, Stock = 2 };
-        using var dbContext = new OrderingDbContext(options);
-        dbContext.Products.Add(_product);
-        dbContext.SaveChanges();
+        _dbContext.Products.Add(_product);
+        _dbContext.SaveChanges();
 
         _productsRepository = new ProductsRepository(_dbContext);
     }
@@ -49,12 +40,5 @@ public class ProductsRepositoryTests : IDisposable
 
         // Assert
         Assert.False(isInStock, message);
-    }
-
-    public void Dispose()
-    {
-        // Cleanup: Clear the database
-        _dbContext.Database.EnsureDeleted();
-        _dbContext.Dispose();
     }
 }
