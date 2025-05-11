@@ -1,6 +1,8 @@
 using Company.Ordering.Domain.OrderAggregate;
 using Company.Ordering.Infrastructure;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,11 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddDbContext<OrderingDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Ordering")));
+
+//Register validators explicitly for better startup performance in comparison with Assembly scaning
+//https://docs.fluentvalidation.net/en/latest/di.html
+builder.Services.AddScoped<IValidator<Order>, OrderValidator>();
+builder.Services.AddFluentValidationAutoValidation();
 
 var app = builder.Build();
 
