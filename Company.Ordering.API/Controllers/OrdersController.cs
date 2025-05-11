@@ -12,7 +12,7 @@ public class OrdersController(IOrdersRepository ordersRepository) : ControllerBa
     {
         await ordersRepository.CreateOrderAsync(order);
         await ordersRepository.UnitOfWork.SaveChangesAsync();
-        return Created();
+        return Created($"/{order.Number}", order.Number);
     }
 
     [HttpGet("{orderNumber}")]
