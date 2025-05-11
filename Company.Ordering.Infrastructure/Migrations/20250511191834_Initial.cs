@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Company.Ordering.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,14 +17,27 @@ namespace Company.Ordering.Infrastructure.Migrations
                 {
                     Number = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    InvoiceAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    InvoiceAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     InvoiceEmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    InvoiceCreditCardNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    InvoiceCreditCardNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.Number);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Stock = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -47,6 +60,11 @@ namespace Company.Ordering.Infrastructure.Migrations
                         principalColumn: "Number",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "Id", "Stock" },
+                values: new object[] { 12345, 2 });
         }
 
         /// <inheritdoc />
@@ -54,6 +72,9 @@ namespace Company.Ordering.Infrastructure.Migrations
         {
             migrationBuilder.DropTable(
                 name: "OrderProduct");
+
+            migrationBuilder.DropTable(
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Orders");
