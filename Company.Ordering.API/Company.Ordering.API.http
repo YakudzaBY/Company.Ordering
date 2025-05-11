@@ -8,7 +8,6 @@ POST {{Company.Ordering.API_HostAddress}}/Orders
 Content-Type: application/json
 
 {
-  "orderNumber": 12345,
   "customerName": "John Doe",
   "orderDate": "2025-05-10T00:00:00Z",
   "invoiceAddress": "123 Main St, Springfield, USA",
@@ -16,18 +15,12 @@ Content-Type: application/json
   "invoiceCreditCardNumber": "4111111111111111",
   "products": [
     {
-      "productId": 1,
+      "productId": 12345,
       "name": "Product A",
       "quantity": 2,
       "price": 19.99
-    },
-    {
-      "productId": 2,
-      "name": "Product B",
-      "quantity": 1,
-      "price": 9.99
     }
   ]
 }
 ###
-GET {{Company.Ordering.API_HostAddress}}/Orders/1
+GET {{Company.Ordering.API_HostAddress}}/Orders/abc

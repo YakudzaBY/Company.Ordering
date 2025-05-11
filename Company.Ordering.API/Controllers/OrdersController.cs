@@ -1,18 +1,22 @@
-﻿using Company.Ordering.Domain.OrderAggregate;
+﻿using Company.Ordering.API.Commands;
+using Company.Ordering.Domain.OrderAggregate;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company.Ordering.API.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-public class OrdersController(IOrdersRepository ordersRepository) : ControllerBase
+public class OrdersController(
+    IOrdersRepository ordersRepository,
+    IMediator mediator)
+    : ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> CreateOrderAsync(Order order)
+    public async Task<IActionResult> CreateOrderAsync(CreateOrder request)
     {
-        await ordersRepository.CreateOrderAsync(order);
-        await ordersRepository.UnitOfWork.SaveChangesAsync();
-        return Created($"/{order.Number}", order.Number);
+        var orderNumber = await mediator.Send(request);
+        return Created($"/{orderNumber}", orderNumber);
     }
 
     [HttpGet("{orderNumber}")]

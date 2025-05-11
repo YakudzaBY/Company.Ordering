@@ -28,6 +28,11 @@ builder.Services.AddDbContext<OrderingDbContext>(options =>
 builder.Services.AddScoped<IValidator<Order>, OrderValidator>();
 builder.Services.AddFluentValidationAutoValidation();
 
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssemblyContaining<Program>();
+});
+
 var app = builder.Build();
 
 app.MapDefaultEndpoints();

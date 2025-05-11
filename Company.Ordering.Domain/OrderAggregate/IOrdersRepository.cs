@@ -2,7 +2,7 @@
 
 public interface IOrdersRepository: IRepository<Order>
 {
-    Task CreateOrderAsync(Order order);
+    Task CreateOrderAsync(Order order, CancellationToken cancellationToken);
 
-    Task<Order?> GetOrderAsync(int orderNumber);
+    Task<Order?> GetOrderAsync(int orderNumber, CancellationToken cancellationToken = default);
 }
