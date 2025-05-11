@@ -3,7 +3,7 @@
 GET {{Company.Ordering.API_HostAddress}}/weatherforecast/
 Accept: application/json
 
-###
+### Succesfully create Order
 POST {{Company.Ordering.API_HostAddress}}/Orders
 Content-Type: application/json
 
@@ -22,5 +22,52 @@ Content-Type: application/json
     }
   ]
 }
-###
+
+### Fail to create Order due to Out of stock
+POST {{Company.Ordering.API_HostAddress}}/Orders
+Content-Type: application/json
+
+{
+  "customerName": "John Doe",
+  "orderDate": "2025-05-10T00:00:00Z",
+  "invoiceAddress": "123 Main St, Springfield, USA",
+  "invoiceEmailAddress": "johndoe@example.com",
+  "invoiceCreditCardNumber": "4111111111111111",
+  "products": [
+    {
+      "productId": 12345,
+      "name": "Product A",
+      "quantity": 2,
+      "price": 19.99
+    },
+    {
+      "productId": 1,
+      "name": "Product B",
+      "quantity": 3,
+      "price": 29.99
+    }
+  ]
+}
+
+### Fail to create Order due to incorrect email
+POST {{Company.Ordering.API_HostAddress}}/Orders
+Content-Type: application/json
+
+{
+  "customerName": "John Doe",
+  "orderDate": "2025-05-10T00:00:00Z",
+  "invoiceAddress": "123 Main St, Springfield, USA",
+  "invoiceEmailAddress": "johndoeexample.com",
+  "invoiceCreditCardNumber": "4111111111111111",
+  "products": [
+    {
+      "productId": 12345,
+      "name": "Product A",
+      "quantity": 2,
+      "price": 19.99
+    }
+  ]
+}
+
+### Fail to get order due to incorrect orderId
 GET {{Company.Ordering.API_HostAddress}}/Orders/abc

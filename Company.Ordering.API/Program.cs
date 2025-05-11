@@ -1,3 +1,5 @@
+using Company.Ordering.API.Commands;
+using Company.Ordering.API.Validators;
 using Company.Ordering.Domain.OrderAggregate;
 using Company.Ordering.Domain.ProductAggregate;
 using Company.Ordering.Infrastructure;
@@ -26,6 +28,7 @@ builder.Services.AddDbContext<OrderingDbContext>(options =>
 //Register validators explicitly for better startup performance in comparison with Assembly scaning
 //https://docs.fluentvalidation.net/en/latest/di.html
 builder.Services.AddScoped<IValidator<Order>, OrderValidator>();
+builder.Services.AddScoped<IValidator<CreateOrder>, CreateOrderValidator>();
 builder.Services.AddFluentValidationAutoValidation();
 
 builder.Services.AddMediatR(cfg =>
