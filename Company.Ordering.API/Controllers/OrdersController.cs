@@ -16,7 +16,7 @@ public class OrdersController(IOrdersRepository ordersRepository) : ControllerBa
     }
 
     [HttpGet("{orderNumber}")]
-    public async Task<Order> GetOrderAsync(int orderNumber)
+    public async Task<Order?> GetOrderAsync(int orderNumber)
     {
         return await ordersRepository.GetOrderAsync(orderNumber);
     }
