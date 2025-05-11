@@ -1,5 +1,7 @@
 using Company.Ordering.Domain.OrderAggregate;
+using Company.Ordering.Domain.ProductAggregate;
 using Company.Ordering.Infrastructure;
+using Company.Ordering.Infrastructure.Repositories;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
@@ -14,6 +16,7 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
+builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 

@@ -2,7 +2,7 @@
 
 namespace Company.Ordering.Domain.OrderAggregate;
 
-public class Order
+public class Order : IAggregateRoot
 {
     public int Number { get; set; }
 

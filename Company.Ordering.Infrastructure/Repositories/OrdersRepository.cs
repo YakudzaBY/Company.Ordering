@@ -1,14 +1,11 @@
-﻿using Company.Ordering.Domain;
-using Company.Ordering.Domain.OrderAggregate;
+﻿using Company.Ordering.Domain.OrderAggregate;
 using Microsoft.EntityFrameworkCore;
 
-namespace Company.Ordering.Infrastructure;
+namespace Company.Ordering.Infrastructure.Repositories;
 
-public class OrdersRepository(OrderingDbContext uow) : IOrdersRepository
+public class OrdersRepository(OrderingDbContext uow)
+    : Repository<Order>(uow), IOrdersRepository
 {
-
-    public IUnitOfWork UnitOfWork => uow;
-
     public async Task CreateOrderAsync(Order order)
     {
         await uow.Orders.AddAsync(order);
