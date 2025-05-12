@@ -7,17 +7,19 @@ namespace Company.Ordering.Infrastructure.Tests;
 public class CreateOrderTests: InMemoryDbTest
 {
     [Theory]
-    [InlineData(new int[] { 1 })]
-    [InlineData(new int[] { 2, 3 })]
-    public async Task TestAsync(int[] ids)
+    [InlineData(1)]
+    [InlineData(2)]
+    public async Task TestAsync(int amount)
     {
         //Arrange
-        var orders = ids
-            .Select(id => new Order
+        var orders = new Order[amount];
+        for (var i = 0; i < amount; i++)
+        {
+            orders[i] = new Order
             {
                 InvoiceEmailAddress = "asd@example.com"
-            })
-            .ToArray();
+            };
+        }
 
         var repo = new OrdersRepository(_dbContext);
 
