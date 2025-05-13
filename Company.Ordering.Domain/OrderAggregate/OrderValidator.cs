@@ -10,7 +10,7 @@ public class OrderValidator : AbstractValidator<Order>
         RuleFor(order => order.InvoiceEmailAddress)
             .NotEmpty()
             .EmailAddress()
-            .WithMessage("Invalid Email Address");
+            .WithMessage("The email address is invalid");
 
         RuleForEach(order => order.Products)
             .MustAsync(async (product, cancellation) =>
@@ -18,6 +18,6 @@ public class OrderValidator : AbstractValidator<Order>
                 var isInStock = await productRepository.IsInStock(product.ProductId, product.Amount);
                 return isInStock;
             })
-            .WithMessage("Product out of stock");
+            .WithMessage("The product is out of stock");
     }
 }

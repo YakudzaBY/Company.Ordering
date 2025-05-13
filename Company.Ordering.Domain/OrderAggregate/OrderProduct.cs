@@ -6,7 +6,7 @@ public class OrderProduct
 
     public int ProductId { get; set; }
 
-    public string Name { get; set; } = default!;
+    public string? Name { get; set; } = default!;
 
     public int Amount { get; set; }
 
