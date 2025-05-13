@@ -39,6 +39,7 @@ public class OrdersControllerIntegrationTests
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         var orderNumber = await response.Content.ReadAsStringAsync();
         Assert.NotEmpty(orderNumber);
+        Assert.Equal($"/{orderNumber}", response.Headers.Location?.ToString());
     }
 
     [Fact]
