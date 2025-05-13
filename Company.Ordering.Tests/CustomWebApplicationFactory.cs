@@ -13,22 +13,12 @@ public class CustomWebApplicationFactory<TProgram>
     {
         builder.ConfigureServices(services =>
         {
-            var dbContextDescriptor = services
-                .SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<OrderingDbContext>));
-
-            services.Remove(dbContextDescriptor);
-
-            var suffix = DateTime.UtcNow.Ticks.ToString();
-            services.AddDbContext<OrderingDbContext>(options =>
-            {
-                options.UseSqlServer($"Server=(localdb)\\MSSQLLocalDB;Database=Ordering_{suffix};Integrated Security=true;");
-            });
-
             var provider = services.BuildServiceProvider();
 
             using (var scope = provider.CreateScope())
             {
                 var db = scope.ServiceProvider.GetRequiredService<OrderingDbContext>();
+                db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
             }
         });
