@@ -20,8 +20,8 @@ public class OrdersController(
     }
 
     [HttpGet("{orderNumber}")]
-    public async Task<Order?> GetOrderAsync(int orderNumber)
+    public async Task<Order?> GetOrderWithProductsAsync(int orderNumber)
     {
-        return await ordersRepository.GetOrderAsync(orderNumber);
+        return await ordersRepository.GetOrderWithProductsAsync(orderNumber);
     }
 }

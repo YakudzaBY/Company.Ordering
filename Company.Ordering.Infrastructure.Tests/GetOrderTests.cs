@@ -23,7 +23,7 @@ public class GetOrderTests : InMemoryDbTest
     public async Task PositiveTestAsync()
     {
         //Act
-        var dbOrder = await _ordersRepository.GetOrderAsync(_order.Number);
+        var dbOrder = await _ordersRepository.GetOrderWithProductsAsync(_order.Number);
 
         //Assert
         Assert.NotNull(dbOrder);
@@ -33,7 +33,7 @@ public class GetOrderTests : InMemoryDbTest
     public async Task NegativeTestAsync()
     {
         //Act
-        var dbOrder = await _ordersRepository.GetOrderAsync(-1);
+        var dbOrder = await _ordersRepository.GetOrderWithProductsAsync(-1);
 
         //Assert
         Assert.Null(dbOrder);
