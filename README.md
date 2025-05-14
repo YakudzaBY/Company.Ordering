@@ -14,6 +14,15 @@ To follow DDD implemented following solution structure:
 - **Aplication Layer (`Company.Ordering.API`)**: Exposes HTTP endpoints, handles requests via controllers, and uses MediatR for command/query dispatching.
 - **Domain Layer (`Company.Ordering.Domain`)**: Contains core business logic, entities, and validation (e.g., `Order`, `OrderValidator`).
 - **Infrastructure Layer (`Company.Ordering.Infrastructure`)**: Implements data access using Entity Framework Core and repository patterns.
+```mermaid
+graph TD
+API["Company.Ordering.API"]
+Infrastructure["Company.Ordering.Infrastructure"]
+Domain["Company.Ordering.Domain"]
+API --> Infrastructure
+API --> Domain
+Infrastructure --> Domain
+```
 
 ### Database
 Used localdb as simplest from the allowed options.
