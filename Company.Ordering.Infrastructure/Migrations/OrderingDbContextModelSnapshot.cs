@@ -33,6 +33,9 @@ namespace Company.Ordering.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("InvoiceAddress")
                         .HasColumnType("nvarchar(max)");
 

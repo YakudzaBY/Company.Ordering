@@ -1,7 +1,10 @@
-
 var builder = DistributedApplication.CreateBuilder(args);
 
-builder.AddProject<Projects.Company_Ordering_API>("company-ordering-api");
-//builder.Services
+var cs = builder.AddConnectionString("Ordering");
+builder
+    .AddProject<Projects.Company_Ordering_API>("company-ordering-api")
+    .WithExternalHttpEndpoints()
+    .WithReference(cs);
+
 
 builder.Build().Run();

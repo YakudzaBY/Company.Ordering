@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Company.Ordering.Infrastructure.Migrations
 {
     [DbContext(typeof(OrderingDbContext))]
-    [Migration("20250513152700_Initial")]
+    [Migration("20250513192420_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -35,6 +35,9 @@ namespace Company.Ordering.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("InvoiceAddress")
                         .HasColumnType("nvarchar(max)");

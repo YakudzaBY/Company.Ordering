@@ -17,6 +17,7 @@ namespace Company.Ordering.Infrastructure.Migrations
                 {
                     Number = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     InvoiceAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     InvoiceEmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     InvoiceCreditCardNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),

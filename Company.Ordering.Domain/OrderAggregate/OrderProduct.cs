@@ -11,4 +11,9 @@ public class OrderProduct
     public int Amount { get; set; }
 
     public decimal Price { get; set; }
+
+    public OrderProduct Clone()
+    {
+        return (OrderProduct) MemberwiseClone();
+    }
 }
