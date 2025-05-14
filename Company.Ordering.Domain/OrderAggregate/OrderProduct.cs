@@ -6,9 +6,9 @@ public class OrderProduct
 
     public int ProductId { get; set; }
 
-    public string? Name { get; set; } = default!;
+    public string? ProductName { get; set; }
 
-    public int Amount { get; set; }
+    public int ProductAmount { get; set; }
 
-    public decimal Price { get; set; }
+    public decimal ProductPrice { get; set; }
 }

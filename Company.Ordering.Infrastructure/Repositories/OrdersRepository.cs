@@ -17,6 +17,6 @@ public class OrdersRepository(OrderingDbContext uow)
             .Orders
             .AsNoTracking()
             .Include(o => o.Products)
-            .SingleOrDefaultAsync(o => o.Number == orderNumber, cancellationToken);
+            .SingleOrDefaultAsync(o => o.OrderNumber == orderNumber, cancellationToken);
     }
 }

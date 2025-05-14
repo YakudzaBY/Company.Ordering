@@ -15,7 +15,7 @@ public class OrderValidator : AbstractValidator<Order>
         RuleForEach(order => order.Products)
             .MustAsync(async (product, cancellation) =>
             {
-                var isInStock = await productRepository.IsInStock(product.ProductId, product.Amount);
+                var isInStock = await productRepository.IsInStock(product.ProductId, product.ProductAmount);
                 return isInStock;
             })
             .WithMessage("The product is out of stock");

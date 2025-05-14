@@ -1,10 +1,9 @@
-﻿using Company.Ordering.API.Models;
-using MediatR;
-
-namespace Company.Ordering.API.Commands
+﻿namespace Company.Ordering.API.Models
 {
-    public class CreateOrder : IRequest<int>
+    public class OrderWithProducts
     {
+        public int Number { get; set; }
+
         public virtual ICollection<OrderProduct> Products { get; set; } = default!;
 
         public string? InvoiceAddress { get; set; }
@@ -14,6 +13,5 @@ namespace Company.Ordering.API.Commands
         public string? InvoiceCreditCardNumber { get; set; }
 
         public DateTime CreatedAt { get; set; }
-
     }
 }

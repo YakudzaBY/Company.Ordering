@@ -24,11 +24,11 @@ namespace Company.Ordering.Infrastructure.Migrations
 
             modelBuilder.Entity("Company.Ordering.Domain.OrderAggregate.Order", b =>
                 {
-                    b.Property<int>("Number")
+                    b.Property<int>("OrderNumber")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Number"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderNumber"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -43,7 +43,7 @@ namespace Company.Ordering.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Number");
+                    b.HasKey("OrderNumber");
 
                     b.ToTable("Orders");
                 });
@@ -56,16 +56,18 @@ namespace Company.Ordering.Infrastructure.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Amount")
+                    b.Property<int>("ProductAmount")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("ProductName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
+                    b.Property<decimal>("ProductPrice")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("OrderNumber", "ProductId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("OrderProduct");
                 });
@@ -99,6 +101,12 @@ namespace Company.Ordering.Infrastructure.Migrations
                         .WithMany("Products")
                         .HasForeignKey("OrderNumber")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Company.Ordering.Domain.ProductAggregate.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 

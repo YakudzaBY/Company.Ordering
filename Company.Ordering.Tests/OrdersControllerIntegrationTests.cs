@@ -1,10 +1,8 @@
 using System.Net;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
+using Company.Ordering.API.Commands;
 using Company.Ordering.Domain.OrderAggregate;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Xunit;
 
 namespace Company.Ordering.Tests;
 
@@ -22,16 +20,16 @@ public class OrdersControllerIntegrationTests
     public async Task CreateAndReadOrder()
     {
         // Arrange
-        var createOrder = new
+        var createOrder = new CreateOrder
         {
-            Products = new[]
-            {
-                new
+            Products =
+            [
+                new API.Models.OrderProduct
                 {
                     ProductId = 12345,
-                    Amount = 1
+                    ProductAmount = 1
                 }
-            },
+            ],
             InvoiceEmailAddress = "test@example.com",
         };
 
@@ -55,16 +53,16 @@ public class OrdersControllerIntegrationTests
     public async Task CreateOrder_WithInvalidEmail_ReturnsBadRequest()
     {
         // Arrange
-        var createOrder = new
+        var createOrder = new CreateOrder
         {
-            Products = new[]
-            {
-                new
+            Products =
+            [
+                new API.Models.OrderProduct
                 {
                     ProductId = 12345,
-                    Amount = 1
+                    ProductAmount = 1
                 }
-            },
+            ],
             InvoiceEmailAddress = "not-an-email" // Invalid email format
         };
 
@@ -82,16 +80,16 @@ public class OrdersControllerIntegrationTests
     public async Task CreateOrder_WithOutOfStockProduct_ReturnsBadRequest()
     {
         // Arrange
-        var createOrder = new
+        var createOrder = new CreateOrder
         {
-            Products = new[]
-            {
-                new
+            Products =
+            [
+                new API.Models.OrderProduct
                 {
                     ProductId = 12345,
-                    Amount = int.MaxValue // Invalid amount
+                    ProductAmount = int.MaxValue // Invalid amount
                 }
-            },
+            ],
             InvoiceEmailAddress = "someone@example.com"
         };
 

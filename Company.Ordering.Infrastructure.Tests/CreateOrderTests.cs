@@ -34,7 +34,7 @@ public class CreateOrderTests: InMemoryDbTest
         foreach(var order in orders)
         {
             var orderFromDb = await _dbContext.Orders
-                .SingleOrDefaultAsync(o => o.Number == order.Number, CancellationToken.None);
+                .SingleOrDefaultAsync(o => o.OrderNumber == order.OrderNumber, CancellationToken.None);
 
             Assert.NotNull(orderFromDb);
         }

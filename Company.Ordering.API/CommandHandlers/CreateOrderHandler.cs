@@ -9,9 +9,24 @@ namespace Company.Ordering.API.CommandHandlers
     {
         public async Task<int> Handle(CreateOrder request, CancellationToken cancellationToken)
         {
-            await ordersRepository.CreateOrderAsync(request, cancellationToken);
+            var order = new Order
+            {
+                CreatedAt = DateTime.UtcNow,
+                InvoiceCreditCardNumber = request.InvoiceCreditCardNumber,
+                InvoiceAddress = request.InvoiceAddress,
+                InvoiceEmailAddress = request.InvoiceEmailAddress,
+                Products = [..request.Products
+                    .Select(p => new OrderProduct
+                    {
+                        ProductId = p.ProductId,
+                        ProductName = p.ProductName,
+                        ProductAmount = p.ProductAmount,
+                        ProductPrice = p.ProductPrice
+                    })]
+            };
+            await ordersRepository.CreateOrderAsync(order, cancellationToken);
             await ordersRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
-            return request.Number;
+            return order.OrderNumber;
         }
     }
 }

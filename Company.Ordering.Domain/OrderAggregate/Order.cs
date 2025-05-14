@@ -4,9 +4,9 @@ namespace Company.Ordering.Domain.OrderAggregate;
 
 public class Order : IAggregateRoot
 {
-    public int Number { get; set; }
+    public int OrderNumber { get; set; }
 
-    public ICollection<OrderProduct> Products { get; set; } = default!;
+    public virtual ICollection<OrderProduct>? Products { get; set; }
 
     public string? InvoiceAddress { get; set; }
 

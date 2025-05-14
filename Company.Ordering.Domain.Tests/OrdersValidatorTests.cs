@@ -45,7 +45,7 @@ public class OrdersValidatorTests
                 new OrderProduct
                 {
                     ProductId = 1,
-                    Amount = 2,
+                    ProductAmount = 2,
                 },
             ],
         };
@@ -71,12 +71,12 @@ public class OrdersValidatorTests
                 new OrderProduct
                 {
                     ProductId = 1,
-                    Amount = 2,
+                    ProductAmount = 2,
                 },
                 new OrderProduct
                 {
                     ProductId = 2,
-                    Amount = 10,
+                    ProductAmount = 10,
                 },
             ],
         };

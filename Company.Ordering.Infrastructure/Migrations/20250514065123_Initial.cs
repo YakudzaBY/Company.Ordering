@@ -15,7 +15,7 @@ namespace Company.Ordering.Infrastructure.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    Number = table.Column<int>(type: "int", nullable: false)
+                    OrderNumber = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     InvoiceAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     InvoiceEmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -24,7 +24,7 @@ namespace Company.Ordering.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Orders", x => x.Number);
+                    table.PrimaryKey("PK_Orders", x => x.OrderNumber);
                 });
 
             migrationBuilder.CreateTable(
@@ -46,9 +46,9 @@ namespace Company.Ordering.Infrastructure.Migrations
                 {
                     OrderNumber = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Amount = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    ProductName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProductAmount = table.Column<int>(type: "int", nullable: false),
+                    ProductPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -57,14 +57,25 @@ namespace Company.Ordering.Infrastructure.Migrations
                         name: "FK_OrderProduct_Orders_OrderNumber",
                         column: x => x.OrderNumber,
                         principalTable: "Orders",
-                        principalColumn: "Number",
+                        principalColumn: "OrderNumber",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderProduct_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "Id", "Stock" },
                 values: new object[] { 12345, 2 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderProduct_ProductId",
+                table: "OrderProduct",
+                column: "ProductId");
         }
 
         /// <inheritdoc />
@@ -74,10 +85,10 @@ namespace Company.Ordering.Infrastructure.Migrations
                 name: "OrderProduct");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "Products");
         }
     }
 }
