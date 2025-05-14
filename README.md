@@ -11,12 +11,35 @@
 ```mermaid
 sequenceDiagram
     actor User
-    User->>API: POST Order
-    API->>DB: Product in Stock?
-    DB-->>API: 
-    API->>DB: INSERT Order and Products
-    DB-->>API: Order.Id
-    API-->>User: 204 Order.Id
+    box API
+    participant ASP.NET
+    participant Validation as FluentValidation
+    participant Controller
+    participant MediatR
+    participant CommandHandler
+    participant Repository
+    participant DbContext
+    end
+    User->>ASP.NET: POST Order
+    ASP.NET-)Validation: Is Order Valid
+    Validation-)DB: Product in Stock?
+    DB--)Validation: 
+    Validation--)ASP.NET: Valid
+    ASP.NET-)Controller: SaveOrderAsync
+    Controller-)MediatR: Send CreateOrder
+    MediatR-)CommandHandler: Handle CreateOrder
+    CommandHandler-)Repository: AddOrderAsync
+    Repository-)DbContext: Add Order
+    DbContext-)Repository: Order Added
+    CommandHandler-)DbContext: SaveChangesAsync
+    DbContext-)DB: INSERT Order with Products
+    DB--)DbContext: Inserted Order.Id
+    DbContext--)Repository: Order.Id
+    Repository--)CommandHandler: Order.Id
+    CommandHandler--)MediatR: Order.Id
+    MediatR--)Controller: Order.Id
+    Controller--)ASP.NET: Order.Id and Location
+    ASP.NET--)User: 204 /Order.Id
 ```
 ### Domain Driven Design
 To follow DDD implemented following solution structure:
