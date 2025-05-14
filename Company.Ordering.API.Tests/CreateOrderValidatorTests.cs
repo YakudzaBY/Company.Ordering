@@ -1,10 +1,11 @@
-﻿using Company.Ordering.Domain.OrderAggregate;
+﻿using Company.Ordering.API.Commands;
+using Company.Ordering.API.Validators;
 using Company.Ordering.Domain.ProductAggregate;
 using Moq;
 
-namespace Company.Ordering.Domain.Tests;
+namespace Company.Ordering.API.Tests;
 
-public class OrdersValidatorTests
+public class CreateOrderValidatorTests
 {
     [Fact]
     public async Task OrderFailingByEmailAsync()
@@ -12,9 +13,9 @@ public class OrdersValidatorTests
         //Arrange
         var productsRepository = new Mock<IProductsRepository>();
 
-        var orderValidator = new OrderValidator(productsRepository.Object);
+        var orderValidator = new CreateOrderValidator(productsRepository.Object);
 
-        var order = new Order
+        var order = new CreateOrder
         {
             InvoiceEmailAddress = "notcorrectemail",
         };
@@ -37,12 +38,12 @@ public class OrdersValidatorTests
             .Setup(x => x.IsInStock(It.IsAny<int>(), It.IsAny<int>()))
             .ReturnsAsync(false);
 
-        var orderValidator = new OrderValidator(productsRepository.Object);
+        var orderValidator = new CreateOrderValidator(productsRepository.Object);
 
-        var order = new Order
+        var order = new CreateOrder
         {
             Products = [
-                new OrderProduct
+                new Models.OrderProduct
                 {
                     ProductId = 1,
                     ProductAmount = 2,
@@ -55,7 +56,7 @@ public class OrdersValidatorTests
 
         //Assert
         Assert.False(validationResult.IsValid, "Order should be invalid due Products out of stock");
-        Assert.Contains(validationResult.Errors, e => e.PropertyName == $"{nameof(Order.Products)}[0]");
+        Assert.Contains(validationResult.Errors, e => e.PropertyName == $"{nameof(CreateOrder.Products)}[0]");
     }
 
     [Fact]
@@ -64,16 +65,16 @@ public class OrdersValidatorTests
         //Arrange
         var productsRepository = new Mock<IProductsRepository>();
 
-        var order = new Order
+        var order = new CreateOrder
         {
             InvoiceEmailAddress = "valid@example.com",
             Products = [
-                new OrderProduct
+                new Models.OrderProduct
                 {
                     ProductId = 1,
                     ProductAmount = 2,
                 },
-                new OrderProduct
+                new Models.OrderProduct
                 {
                     ProductId = 2,
                     ProductAmount = 10,
@@ -81,7 +82,7 @@ public class OrdersValidatorTests
             ],
         };
 
-        foreach(var p in order.Products)
+        foreach (var p in order.Products)
         {
 
             productsRepository
@@ -89,7 +90,7 @@ public class OrdersValidatorTests
                 .ReturnsAsync(true);
         }
 
-        var orderValidator = new OrderValidator(productsRepository.Object);
+        var orderValidator = new CreateOrderValidator(productsRepository.Object);
 
         //Act
         var validationResult = await orderValidator.ValidateAsync(order);

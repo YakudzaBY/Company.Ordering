@@ -38,7 +38,6 @@ builder.Services.AddDbContext<OrderingDbContext>(options =>
 
 //Register validators explicitly for better startup performance in comparison with Assembly scaning
 //https://docs.fluentvalidation.net/en/latest/di.html
-builder.Services.AddScoped<IValidator<Order>, OrderValidator>();
 builder.Services.AddScoped<IValidator<CreateOrder>, CreateOrderValidator>();
 builder.Services.AddFluentValidationAutoValidation();
 
