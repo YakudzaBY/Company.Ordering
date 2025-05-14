@@ -1,5 +1,6 @@
 ﻿using Company.Ordering.Domain.OrderAggregate;
 using Company.Ordering.Infrastructure.Repositories;
+using Company.Ordering.Tests;
 using Microsoft.EntityFrameworkCore;
 
 namespace Company.Ordering.Infrastructure.Tests;

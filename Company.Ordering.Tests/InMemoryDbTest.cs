@@ -1,7 +1,8 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using Company.Ordering.Infrastructure;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
-namespace Company.Ordering.Infrastructure.Tests;
+namespace Company.Ordering.Tests;
 
 public abstract class InMemoryDbTest : IDisposable
 {

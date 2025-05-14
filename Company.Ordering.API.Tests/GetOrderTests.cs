@@ -1,6 +1,7 @@
-﻿using Company.Ordering.Infrastructure.Repositories;
+﻿using Company.Ordering.API.Queries;
+using Company.Ordering.Tests;
 
-namespace Company.Ordering.Infrastructure.Tests;
+namespace Company.Ordering.API.Tests;
 
 public class GetOrderTests : InMemoryDbTest
 {
@@ -9,14 +10,14 @@ public class GetOrderTests : InMemoryDbTest
         InvoiceEmailAddress = "someone@example.com"
     };
 
-    private readonly OrdersRepository _ordersRepository;
+    private readonly OrderQueries _ordersRepository;
 
     public GetOrderTests(): base()
     {
         _dbContext.Orders.Add(_order);
         _dbContext.SaveChanges();
 
-        _ordersRepository = new OrdersRepository(_dbContext);
+        _ordersRepository = new OrderQueries(_dbContext);
     }
 
     [Fact]

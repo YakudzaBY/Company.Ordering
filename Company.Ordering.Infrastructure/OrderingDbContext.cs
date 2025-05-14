@@ -7,9 +7,9 @@ namespace Company.Ordering.Infrastructure;
 
 public class OrderingDbContext(DbContextOptions<OrderingDbContext> options) : DbContext(options), IUnitOfWork
 {
-    internal DbSet<Order> Orders { get; set; }
+    public DbSet<Order> Orders { get; set; }
 
-    internal DbSet<Product> Products { get; set; }
+    public DbSet<Product> Products { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

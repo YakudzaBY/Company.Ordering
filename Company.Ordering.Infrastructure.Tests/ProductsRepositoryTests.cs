@@ -1,5 +1,6 @@
 ﻿using Company.Ordering.Domain.ProductAggregate;
 using Company.Ordering.Infrastructure.Repositories;
+using Company.Ordering.Tests;
 
 namespace Company.Ordering.Infrastructure.Tests;
 

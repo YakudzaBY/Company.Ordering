@@ -1,4 +1,5 @@
 using Company.Ordering.API.Commands;
+using Company.Ordering.API.Queries;
 using Company.Ordering.API.Validators;
 using Company.Ordering.Domain.OrderAggregate;
 using Company.Ordering.Domain.ProductAggregate;
@@ -20,6 +21,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
 builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
+builder.Services.AddScoped<IOrderQueries, OrderQueries>();
 
 // Register Swagger/OpenAPI services
 builder.Services.AddEndpointsApiExplorer();

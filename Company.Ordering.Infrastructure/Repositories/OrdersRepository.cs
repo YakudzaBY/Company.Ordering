@@ -10,13 +10,4 @@ public class OrdersRepository(OrderingDbContext uow)
     {
         await uow.Orders.AddAsync(order, cancellationToken);
     }
-
-    public async Task<Order?> GetOrderWithProductsAsync(int orderNumber, CancellationToken cancellationToken = default)
-    {
-        return await uow
-            .Orders
-            .AsNoTracking()
-            .Include(o => o.Products)
-            .SingleOrDefaultAsync(o => o.OrderNumber == orderNumber, cancellationToken);
-    }
 }

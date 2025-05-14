@@ -4,7 +4,7 @@ using Company.Ordering.API.Commands;
 using Company.Ordering.Domain.OrderAggregate;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Company.Ordering.Tests;
+namespace Company.Ordering.API.IntegrationTests;
 
 public class OrdersControllerIntegrationTests
     : IClassFixture<CustomWebApplicationFactory<Program>>
@@ -24,7 +24,7 @@ public class OrdersControllerIntegrationTests
         {
             Products =
             [
-                new API.Models.OrderProduct
+                new Models.OrderProduct
                 {
                     ProductId = 12345,
                     ProductAmount = 1
@@ -57,7 +57,7 @@ public class OrdersControllerIntegrationTests
         {
             Products =
             [
-                new API.Models.OrderProduct
+                new Models.OrderProduct
                 {
                     ProductId = 12345,
                     ProductAmount = 1
@@ -84,7 +84,7 @@ public class OrdersControllerIntegrationTests
         {
             Products =
             [
-                new API.Models.OrderProduct
+                new Models.OrderProduct
                 {
                     ProductId = 12345,
                     ProductAmount = int.MaxValue // Invalid amount

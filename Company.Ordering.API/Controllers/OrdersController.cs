@@ -1,6 +1,6 @@
 ﻿using Company.Ordering.API.Commands;
 using Company.Ordering.API.Models;
-using Company.Ordering.Domain.OrderAggregate;
+using Company.Ordering.API.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +9,7 @@ namespace Company.Ordering.API.Controllers;
 [Route("[controller]")]
 [ApiController]
 public class OrdersController(
-    IOrdersRepository ordersRepository,
+    IOrderQueries orderQueries,
     IMediator mediator)
     : ControllerBase
 {
@@ -28,21 +28,6 @@ public class OrdersController(
     [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<OrderWithProducts?> GetOrderWithProductsAsync(int orderNumber)
     {
-        var order = await ordersRepository.GetOrderWithProductsAsync(orderNumber);
-        return new OrderWithProducts
-        {
-            Number = order.OrderNumber,
-            Products = [..order.Products
-                .Select(p => new Models.OrderProduct {
-                    ProductId = p.ProductId,
-                    ProductName = p.ProductName,
-                    ProductPrice = p.ProductPrice,
-                    ProductAmount = p.ProductAmount
-                })],
-            InvoiceAddress = order.InvoiceAddress,
-            InvoiceEmailAddress = order.InvoiceEmailAddress,
-            InvoiceCreditCardNumber = order.InvoiceCreditCardNumber,
-            CreatedAt = order.CreatedAt
-        };
+        return await orderQueries.GetOrderWithProductsAsync(orderNumber);
     }
 }
