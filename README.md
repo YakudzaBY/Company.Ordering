@@ -27,6 +27,29 @@ Infrastructure --> Domain
 ### Database
 Used localdb as simplest from the allowed options.
 Using default ORM (Entity Framework) Code-First approach allows for fast switching to another DB if necessary.
+```mermaid
+erDiagram
+    ORDER {
+        int OrderNumber PK
+        string InvoiceAddress
+        string InvoiceEmailAddress
+        string InvoiceCreditCardNumber
+        datetime CreatedAt
+    }
+    ORDER_PRODUCT {
+        int OrderNumber PK, FK
+        int ProductId PK, FK
+        string ProductName
+        int ProductAmount
+        decimal ProductPrice
+    }
+    PRODUCT {
+        int Id PK
+        int Stock
+    }
+    ORDER ||--o{ ORDER_PRODUCT : contains
+    PRODUCT ||--o{ ORDER_PRODUCT : "referenced by"
+```
 
 ### Validation
 Used FluentValidation as required.
