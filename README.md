@@ -8,7 +8,16 @@
 - With OpenAPI/Swagger for API documentation as per requirements.
 - Used Controllers instead of minimal APIs for better structure and separation of concerns due to required DDD patern.
 - Enlisted in .NET Aspire orchestration for better monitoring and observability.
-
+```mermaid
+sequenceDiagram
+    actor User
+    User->>API: POST Order
+    API->>DB: Product in Stock?
+    DB-->>API: 
+    API->>DB: INSERT Order and Products
+    DB-->>API: Order.Id
+    API-->>User: 204 Order.Id
+```
 ### Domain Driven Design
 To follow DDD implemented following solution structure:
 - **Aplication Layer (`Company.Ordering.API`)**: Exposes HTTP endpoints, handles requests via controllers, and uses MediatR for command/query dispatching.
