@@ -39,7 +39,10 @@ Can be done using:
 or any other tool.
 
 #### Unit Testing
-Pure Unit-tests had been written for **Domain Layer** `Company.Ordering.Domain.Tests`. Using Moq for mocking dependencies.
+**Application Layer** `Company.Ordering.API.Tests` created using xUnit (as required) mocking dependcies using Moq.
+
+**Domain Layer** `Company.Ordering.Domain.Tests` at the moment do not contain any logic, just interfaces.
+No tests had been created for it.
 
 **Infrastructure layer** tests `Company.Ordering.Infrastructure.Tests` implemneted with slightly bigger scope .
 [Microsoft recomends implementing Unit-Tests my mocking Repositories, instead of mocking DbContext](https://learn.microsoft.com/en-us/ef/core/testing/testing-without-the-database).
@@ -54,7 +57,7 @@ In-memory might seem simple option to choose, but it wouldn't support generation
 Microsoft recommends to use InMemory SQLite as well.
 
 #### Integration Testing
-Implemented in `Company.Ordering.Tests` using [Microsoft recommendation](https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-9.0). 
+Implemented in `Company.Ordering.API.IntegrationTests` using [Microsoft recommendation](https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-9.0). 
 They test 2 required endpoints with all explicitly mentioned cases using real database.
 Database for Integration Testing can be customized using environment specific configuration file, for example `appsettings.IntegrationTest.json`.
 In order for it work correct [ASP.NET environment](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/environments?view=aspnetcore-9.0) must be specified.
