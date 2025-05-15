@@ -1,21 +1,19 @@
-﻿using Company.Ordering.Domain.ProductAggregate;
-using Company.Ordering.Infrastructure.Repositories;
+﻿using Company.Ordering.Infrastructure.Repositories;
 using Company.Ordering.Tests;
 
 namespace Company.Ordering.Infrastructure.Tests;
 
-public class ProductsRepositoryTests : InMemoryDbTest
+public class ProductsRepositoryTests : InMemoryDbTestWithProduct
 {
-    private readonly Product _product;
-    private readonly ProductsRepository _productsRepository;
+    private readonly Func<Task<ProductsRepository>> GetProductsRepositoryAsync;
 
     public ProductsRepositoryTests() : base()
     {
-        _product = new Product(2);
-        _dbContext.Products.Add(_product);
-        _dbContext.SaveChanges();
-
-        _productsRepository = new ProductsRepository(_dbContext);
+        GetProductsRepositoryAsync = async () =>
+        {
+            var dbContext = await GetDbContextAsync();
+            return new ProductsRepository(dbContext);
+        };
     }
 
     [Theory]
@@ -24,8 +22,12 @@ public class ProductsRepositoryTests : InMemoryDbTest
     [InlineData(2)]
     public async Task InStockTestAsync(int amount)
     {
+        // Arrange
+        var productsRepository = await GetProductsRepositoryAsync();
+        var product = await EnsureProductAsync();
+
         // Act
-        var isInStock = await _productsRepository.IsInStock(_product.Id, amount);
+        var isInStock = await productsRepository.IsInStock(product.Id, amount);
 
         // Assert
         Assert.True(isInStock, "Product must be in stock");
@@ -34,8 +36,12 @@ public class ProductsRepositoryTests : InMemoryDbTest
     [Fact]
     public async Task NotInStockByIdTestAsync()
     {
+        // Arrange
+        var productsRepository = await GetProductsRepositoryAsync();
+        var product = await EnsureProductAsync();
+
         // Act
-        var isInStock = await _productsRepository.IsInStock(_product.Id + 1, _product.Stock);
+        var isInStock = await productsRepository.IsInStock(product.Id + 1, product.Stock);
 
         // Assert
         Assert.False(isInStock, "Product must not be in stock as absent in db");
@@ -44,8 +50,12 @@ public class ProductsRepositoryTests : InMemoryDbTest
     [Fact]
     public async Task NotInStockByAmountTestAsync()
     {
+        // Arrange
+        var productsRepository = await GetProductsRepositoryAsync();
+        var product = await EnsureProductAsync();
+
         // Act
-        var isInStock = await _productsRepository.IsInStock(_product.Id, _product.Stock + 1);
+        var isInStock = await productsRepository.IsInStock(product.Id, product.Stock + 1);
 
         // Assert
         Assert.False(isInStock, "Product must not be in stock as stock less then required");

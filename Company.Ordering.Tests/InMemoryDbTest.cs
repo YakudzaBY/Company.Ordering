@@ -4,55 +4,38 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Company.Ordering.Tests;
 
-public abstract class InMemoryDbTest : IDisposable
+public abstract class InMemoryDbTest : IAsyncDisposable
 {
-    private bool disposedValue;
     private readonly SqliteConnection _connection;
-    protected readonly OrderingDbContext _dbContext;
+    protected readonly Func<Task<OrderingDbContext>> GetDbContextAsync;
+
     public InMemoryDbTest()
     {
         // Create an in-memory SQLite connection
         _connection = new SqliteConnection("DataSource=:memory:");
-        _connection.Open();
+        var connectionTask = _connection.OpenAsync();
 
-        var dbContextOptions = new DbContextOptionsBuilder<OrderingDbContext>()
-            .UseSqlite(_connection) // Use SQLite in-memory database
-            .Options;
-
-        _dbContext = new OrderingDbContext(dbContextOptions);
-        _dbContext.Database.EnsureCreated(); // Create the database schema
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (!disposedValue)
+        GetDbContextAsync = async () =>
         {
-            if (disposing)
-            {
-                //dispose managed state (managed objects)
-                _dbContext.Database.EnsureDeleted();
-                _dbContext.Dispose();
-                _connection.Close();
-                _connection.Dispose();
-            }
+            await connectionTask;
 
-            //free unmanaged resources (unmanaged objects) and override finalizer
-            //set large fields to null
-            disposedValue = true;
-        }
+            var dbContextOptions = new DbContextOptionsBuilder<OrderingDbContext>()
+                .UseSqlite(_connection) // Use SQLite in-memory database
+                .Options;
+
+            var dbContext = new OrderingDbContext(dbContextOptions);
+
+            await dbContext.Database.EnsureCreatedAsync();
+            return dbContext;
+        };
     }
 
-    // override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-    // ~InMemoryDbTest()
-    // {
-    //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-    //     Dispose(disposing: false);
-    // }
-
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
-        // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        Dispose(disposing: true);
-        GC.SuppressFinalize(this);
+        var dbContext = await GetDbContextAsync();
+        await dbContext.Database.EnsureDeletedAsync();
+        await dbContext.DisposeAsync();
+        await _connection.CloseAsync();
+        await _connection.DisposeAsync();
     }
 }
