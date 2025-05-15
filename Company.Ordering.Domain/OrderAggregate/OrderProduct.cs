@@ -2,11 +2,24 @@
 
 public class OrderProduct
 {
-    public int ProductId { get; set; }
+    protected OrderProduct()
+    {
 
-    public string? ProductName { get; set; }
+    }
 
-    public int ProductAmount { get; set; }
+    public OrderProduct(int productId, string? productName, int productAmount, decimal productPrice) : this()
+    {
+        ProductId = productId;
+        ProductName = productName;
+        ProductAmount = productAmount;
+        ProductPrice = productPrice;
+    }
 
-    public decimal ProductPrice { get; set; }
+    public int ProductId { get; private set; }
+
+    public string? ProductName { get; private set; }
+
+    public int ProductAmount { get; private set; }
+
+    public decimal ProductPrice { get; private set; }
 }

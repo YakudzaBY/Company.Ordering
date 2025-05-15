@@ -1,18 +1,44 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Company.Ordering.Domain.OrderAggregate;
+﻿namespace Company.Ordering.Domain.OrderAggregate;
 
 public class Order : IAggregateRoot
 {
-    public int OrderNumber { get; set; }
 
-    public virtual ICollection<OrderProduct>? Products { get; set; }
+    protected Order()
+    {
+        _products = [];
+    }
 
-    public string? InvoiceAddress { get; set; }
+    public Order(int orderNumber,
+        string? invoiceAddress,
+        string invoiceEmailAddress,
+        string? invoiceCreditCardNumber,
+        DateTime createdAt)
+        : this()
+    {
+        OrderNumber = orderNumber;
+        InvoiceAddress = invoiceAddress;
+        InvoiceEmailAddress = invoiceEmailAddress;
+        InvoiceCreditCardNumber = invoiceCreditCardNumber;
+        CreatedAt = createdAt;
+    }
 
-    public string InvoiceEmailAddress { get; set; } = default!;
+    public int OrderNumber { get; private set; }
 
-    public string? InvoiceCreditCardNumber { get; set; }
+    private readonly List<OrderProduct> _products;
 
-    public DateTime CreatedAt { get; set; }
+    public virtual IReadOnlyCollection<OrderProduct>? Products => _products;
+
+    public string? InvoiceAddress { get; private set; }
+
+    public string InvoiceEmailAddress { get; private set; }
+
+    public string? InvoiceCreditCardNumber { get; private set; }
+
+    public DateTime CreatedAt { get; private set; }
+
+    public async Task AddProductAsync(int productId, string? productName, int productAmount, decimal productPrice)
+    {
+        var product = new OrderProduct(productId, productName, productAmount, productPrice);
+        _products.Add(product);
+    }
 }

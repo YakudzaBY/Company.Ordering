@@ -44,15 +44,17 @@ namespace Company.Ordering.Infrastructure.Migrations
                 name: "OrderProduct",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
-                    OrderNumber = table.Column<int>(type: "int", nullable: false),
                     ProductName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProductAmount = table.Column<int>(type: "int", nullable: false),
-                    ProductPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    ProductPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    OrderNumber = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderProduct", x => new { x.OrderNumber, x.ProductId });
+                    table.PrimaryKey("PK_OrderProduct", x => x.Id);
                     table.ForeignKey(
                         name: "FK_OrderProduct_Orders_OrderNumber",
                         column: x => x.OrderNumber,
@@ -71,6 +73,11 @@ namespace Company.Ordering.Infrastructure.Migrations
                 table: "Products",
                 columns: new[] { "Id", "Stock" },
                 values: new object[] { 12345, 2 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderProduct_OrderNumber",
+                table: "OrderProduct",
+                column: "OrderNumber");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderProduct_ProductId",

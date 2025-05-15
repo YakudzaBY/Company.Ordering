@@ -16,10 +16,7 @@ public class CreateOrderTests: InMemoryDbTest
         var orders = new Order[amount];
         for (var i = 0; i < amount; i++)
         {
-            orders[i] = new Order
-            {
-                InvoiceEmailAddress = "asd@example.com"
-            };
+            orders[i] = new Order(default, default, "asd@example.com", default, default);
         }
 
         var repo = new OrdersRepository(_dbContext);

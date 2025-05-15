@@ -5,10 +5,7 @@ namespace Company.Ordering.API.Tests;
 
 public class GetOrderTests : InMemoryDbTest
 {
-    private readonly Domain.OrderAggregate.Order _order = new()
-    {
-        InvoiceEmailAddress = "someone@example.com"
-    };
+    private readonly Domain.OrderAggregate.Order _order = new(default, default, "someone@example.com", default, default);
 
     private readonly OrderQueries _ordersRepository;
 

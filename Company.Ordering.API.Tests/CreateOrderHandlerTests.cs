@@ -49,7 +49,9 @@ public class CreateOrderHandlerTests
             {
                 // Simulate DB assigning OrderNumber after save
                 if (capturedOrder != null)
-                    capturedOrder.OrderNumber = newOrderNumber;
+                {
+                    capturedOrder.GetType().GetProperty(nameof(Order.OrderNumber))!.SetValue(capturedOrder, newOrderNumber);
+                }
             })
             .ReturnsAsync(1);
 

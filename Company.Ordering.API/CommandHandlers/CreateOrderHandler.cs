@@ -9,21 +9,20 @@ namespace Company.Ordering.API.CommandHandlers
     {
         public async Task<int> Handle(CreateOrder request, CancellationToken cancellationToken)
         {
-            var order = new Order
+            var order = new Order(
+                default,
+                request.InvoiceAddress,
+                request.InvoiceEmailAddress,
+                request.InvoiceCreditCardNumber,
+                DateTime.UtcNow);
+            foreach (var product in request.Products)
             {
-                CreatedAt = DateTime.UtcNow,
-                InvoiceCreditCardNumber = request.InvoiceCreditCardNumber,
-                InvoiceAddress = request.InvoiceAddress,
-                InvoiceEmailAddress = request.InvoiceEmailAddress,
-                Products = [..request.Products
-                    .Select(p => new OrderProduct
-                    {
-                        ProductId = p.ProductId,
-                        ProductName = p.ProductName,
-                        ProductAmount = p.ProductAmount,
-                        ProductPrice = p.ProductPrice
-                    })]
-            };
+                await order.AddProductAsync(
+                    product.ProductId,
+                    product.ProductName,
+                    product.ProductAmount,
+                    product.ProductPrice);
+            }
             await ordersRepository.CreateOrderAsync(order, cancellationToken);
             await ordersRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
             return order.OrderNumber;

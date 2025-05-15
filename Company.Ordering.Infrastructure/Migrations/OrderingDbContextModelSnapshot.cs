@@ -50,13 +50,19 @@ namespace Company.Ordering.Infrastructure.Migrations
 
             modelBuilder.Entity("Company.Ordering.Domain.OrderAggregate.OrderProduct", b =>
                 {
-                    b.Property<int>("OrderNumber")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductId")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("OrderNumber")
                         .HasColumnType("int");
 
                     b.Property<int>("ProductAmount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<string>("ProductName")
@@ -65,7 +71,9 @@ namespace Company.Ordering.Infrastructure.Migrations
                     b.Property<decimal>("ProductPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("OrderNumber", "ProductId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderNumber");
 
                     b.HasIndex("ProductId");
 
@@ -100,8 +108,7 @@ namespace Company.Ordering.Infrastructure.Migrations
                     b.HasOne("Company.Ordering.Domain.OrderAggregate.Order", null)
                         .WithMany("Products")
                         .HasForeignKey("OrderNumber")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Company.Ordering.Domain.ProductAggregate.Product", null)
                         .WithMany()
