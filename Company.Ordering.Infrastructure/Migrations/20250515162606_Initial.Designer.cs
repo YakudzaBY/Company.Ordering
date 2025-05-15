@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Company.Ordering.Infrastructure.Migrations
 {
     [DbContext(typeof(OrderingDbContext))]
-    [Migration("20250515144737_Initial")]
+    [Migration("20250515162606_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -27,11 +27,11 @@ namespace Company.Ordering.Infrastructure.Migrations
 
             modelBuilder.Entity("Company.Ordering.Domain.OrderAggregate.Order", b =>
                 {
-                    b.Property<int>("OrderNumber")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderNumber"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -46,7 +46,7 @@ namespace Company.Ordering.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("OrderNumber");
+                    b.HasKey("Id");
 
                     b.ToTable("Orders");
                 });
@@ -59,7 +59,7 @@ namespace Company.Ordering.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("OrderNumber")
+                    b.Property<int?>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<int>("ProductAmount")
@@ -76,7 +76,7 @@ namespace Company.Ordering.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderNumber");
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId");
 
@@ -97,20 +97,13 @@ namespace Company.Ordering.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 12345,
-                            Stock = 2
-                        });
                 });
 
             modelBuilder.Entity("Company.Ordering.Domain.OrderAggregate.OrderProduct", b =>
                 {
                     b.HasOne("Company.Ordering.Domain.OrderAggregate.Order", null)
                         .WithMany("Products")
-                        .HasForeignKey("OrderNumber")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Company.Ordering.Domain.ProductAggregate.Product", null)

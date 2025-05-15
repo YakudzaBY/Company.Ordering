@@ -1,6 +1,6 @@
 ﻿namespace Company.Ordering.Domain.OrderAggregate;
 
-public class OrderProduct
+public class OrderProduct : Entity
 {
     protected OrderProduct()
     {

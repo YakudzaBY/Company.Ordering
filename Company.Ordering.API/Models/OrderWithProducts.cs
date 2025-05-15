@@ -2,7 +2,7 @@
 {
     public class OrderWithProducts
     {
-        public int Number { get; set; }
+        public int OrderNumber { get; set; }
 
         public virtual ICollection<OrderProduct> Products { get; set; } = default!;
 

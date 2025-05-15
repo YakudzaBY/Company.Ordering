@@ -11,7 +11,7 @@ public class ProductsRepositoryTests : InMemoryDbTest
 
     public ProductsRepositoryTests() : base()
     {
-        _product = new Product (2, 2);
+        _product = new Product(2);
         _dbContext.Products.Add(_product);
         _dbContext.SaveChanges();
 
@@ -31,15 +31,23 @@ public class ProductsRepositoryTests : InMemoryDbTest
         Assert.True(isInStock, "Product must be in stock");
     }
 
-    [Theory]
-    [InlineData(1, 1, "Product must not be in stock as absent in db")]
-    [InlineData(2, 3, "Product must not be in stock as stock is stock=2")]
-    public async Task NotInStockTestAsync(int productId, int stock, string message)
+    [Fact]
+    public async Task NotInStockByIdTestAsync()
     {
         // Act
-        var isInStock = await _productsRepository.IsInStock(productId, stock);
+        var isInStock = await _productsRepository.IsInStock(_product.Id + 1, _product.Stock);
 
         // Assert
-        Assert.False(isInStock, message);
+        Assert.False(isInStock, "Product must not be in stock as absent in db");
+    }
+
+    [Fact]
+    public async Task NotInStockByAmountTestAsync()
+    {
+        // Act
+        var isInStock = await _productsRepository.IsInStock(_product.Id, _product.Stock + 1);
+
+        // Assert
+        Assert.False(isInStock, "Product must not be in stock as stock less then required");
     }
 }

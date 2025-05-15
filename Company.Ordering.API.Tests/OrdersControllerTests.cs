@@ -45,15 +45,15 @@ public class OrdersControllerTests
         // Arrange
         var mediatorMock = new Mock<IMediator>();
         var queriesMock = new Mock<IOrderQueries>();
-        var order = new OrderWithProducts { Number = orderId };
+        var order = new OrderWithProducts { OrderNumber = orderId };
         queriesMock
-            .Setup(q => q.GetOrderWithProductsAsync(order.Number, It.IsAny<CancellationToken>()))
+            .Setup(q => q.GetOrderWithProductsAsync(order.OrderNumber, It.IsAny<CancellationToken>()))
             .ReturnsAsync(order);
 
         var controller = new OrdersController(queriesMock.Object, mediatorMock.Object);
 
         // Act
-        var result = await controller.GetOrderWithProductsAsync(order.Number);
+        var result = await controller.GetOrderWithProductsAsync(order.OrderNumber);
 
         // Assert
         Assert.Equal(order, result);

@@ -15,7 +15,7 @@ namespace Company.Ordering.Infrastructure.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    OrderNumber = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     InvoiceAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     InvoiceEmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -24,7 +24,7 @@ namespace Company.Ordering.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Orders", x => x.OrderNumber);
+                    table.PrimaryKey("PK_Orders", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -50,16 +50,16 @@ namespace Company.Ordering.Infrastructure.Migrations
                     ProductName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProductAmount = table.Column<int>(type: "int", nullable: false),
                     ProductPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    OrderNumber = table.Column<int>(type: "int", nullable: true)
+                    OrderId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrderProduct", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderProduct_Orders_OrderNumber",
-                        column: x => x.OrderNumber,
+                        name: "FK_OrderProduct_Orders_OrderId",
+                        column: x => x.OrderId,
                         principalTable: "Orders",
-                        principalColumn: "OrderNumber",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_OrderProduct_Products_ProductId",
@@ -69,15 +69,10 @@ namespace Company.Ordering.Infrastructure.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.InsertData(
-                table: "Products",
-                columns: new[] { "Id", "Stock" },
-                values: new object[] { 12345, 2 });
-
             migrationBuilder.CreateIndex(
-                name: "IX_OrderProduct_OrderNumber",
+                name: "IX_OrderProduct_OrderId",
                 table: "OrderProduct",
-                column: "OrderNumber");
+                column: "OrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderProduct_ProductId",

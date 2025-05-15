@@ -1,12 +1,8 @@
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using Company.Ordering.API.CommandHandlers;
 using Company.Ordering.API.Commands;
 using Company.Ordering.Domain;
 using Company.Ordering.Domain.OrderAggregate;
 using Moq;
-using Xunit;
 
 namespace Company.Ordering.API.Tests;
 
@@ -50,7 +46,7 @@ public class CreateOrderHandlerTests
                 // Simulate DB assigning OrderNumber after save
                 if (capturedOrder != null)
                 {
-                    capturedOrder.GetType().GetProperty(nameof(Order.OrderNumber))!.SetValue(capturedOrder, newOrderNumber);
+                    capturedOrder.GetType().GetProperty(nameof(Order.Id))!.SetValue(capturedOrder, newOrderNumber);
                 }
             })
             .ReturnsAsync(1);

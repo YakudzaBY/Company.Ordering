@@ -2,7 +2,10 @@ using System.Net;
 using System.Net.Http.Json;
 using Company.Ordering.API.Commands;
 using Company.Ordering.Domain.OrderAggregate;
+using Company.Ordering.Domain.ProductAggregate;
+using Company.Ordering.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Company.Ordering.API.IntegrationTests;
 
@@ -10,10 +13,16 @@ public class OrdersControllerIntegrationTests
     : IClassFixture<CustomWebApplicationFactory<Program>>
 {
     private readonly HttpClient _client;
+    private readonly Product _product;
 
     public OrdersControllerIntegrationTests(CustomWebApplicationFactory<Program> factory)
     {
         _client = factory.CreateClient();
+        _product = new Product(2);
+        using var scope = factory.Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<OrderingDbContext>()!;
+        dbContext.Products.Add(_product);
+        dbContext.SaveChanges();
     }
 
     [Fact]
@@ -26,7 +35,7 @@ public class OrdersControllerIntegrationTests
             [
                 new Models.OrderProduct
                 {
-                    ProductId = 12345,
+                    ProductId = _product.Id,
                     ProductAmount = 1
                 }
             ],
@@ -59,7 +68,7 @@ public class OrdersControllerIntegrationTests
             [
                 new Models.OrderProduct
                 {
-                    ProductId = 12345,
+                    ProductId = _product.Id,
                     ProductAmount = 1
                 }
             ],

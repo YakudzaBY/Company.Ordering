@@ -10,7 +10,6 @@ namespace Company.Ordering.API.CommandHandlers
         public async Task<int> Handle(CreateOrder request, CancellationToken cancellationToken)
         {
             var order = new Order(
-                default,
                 request.InvoiceAddress,
                 request.InvoiceEmailAddress,
                 request.InvoiceCreditCardNumber,
@@ -25,7 +24,7 @@ namespace Company.Ordering.API.CommandHandlers
             }
             await ordersRepository.CreateOrderAsync(order, cancellationToken);
             await ordersRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
-            return order.OrderNumber;
+            return order.Id;
         }
     }
 }

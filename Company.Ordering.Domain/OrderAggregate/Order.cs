@@ -1,6 +1,6 @@
 ﻿namespace Company.Ordering.Domain.OrderAggregate;
 
-public class Order : IAggregateRoot
+public class Order : Entity, IAggregateRoot
 {
 
     protected Order()
@@ -8,21 +8,17 @@ public class Order : IAggregateRoot
         _products = [];
     }
 
-    public Order(int orderNumber,
-        string? invoiceAddress,
+    public Order(string? invoiceAddress,
         string invoiceEmailAddress,
         string? invoiceCreditCardNumber,
         DateTime createdAt)
         : this()
     {
-        OrderNumber = orderNumber;
         InvoiceAddress = invoiceAddress;
         InvoiceEmailAddress = invoiceEmailAddress;
         InvoiceCreditCardNumber = invoiceCreditCardNumber;
         CreatedAt = createdAt;
     }
-
-    public int OrderNumber { get; private set; }
 
     private readonly List<OrderProduct> _products;
 

@@ -11,10 +11,9 @@ public class OrderQueries(OrderingDbContext dbContext) : IOrderQueries
         return await dbContext
             .Orders
             .AsNoTracking()
-            .Where(o => o.OrderNumber == orderNumber)
+            .Where(o => o.Id == orderNumber)
             .Select(order => new OrderWithProducts
             {
-                Number = order.OrderNumber,
                 Products = order.Products!
                         .Select(p => new Models.OrderProduct
                         {

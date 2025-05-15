@@ -9,12 +9,9 @@ public class OrderProductConfiguration : IEntityTypeConfiguration<OrderProduct>
 {
     public void Configure(EntityTypeBuilder<OrderProduct> builder)
     {
-        builder.Property<int>("Id");
-        builder.HasKey("Id");
-
         builder.HasOne<Order>()
                .WithMany(o => o.Products)
-               .HasForeignKey("OrderNumber")
+               .HasForeignKey("OrderId")
                .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne<Product>()
