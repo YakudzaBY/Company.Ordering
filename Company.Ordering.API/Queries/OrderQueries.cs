@@ -15,13 +15,8 @@ public class OrderQueries(OrderingDbContext dbContext) : IOrderQueries
             .Select(order => new OrderWithProducts
             {
                 Products = order.Products!
-                        .Select(p => new Models.OrderProduct
-                        {
-                            ProductId = p.ProductId,
-                            ProductName = p.ProductName,
-                            ProductPrice = p.ProductPrice,
-                            ProductAmount = p.ProductAmount
-                        }).ToList(),
+                        .Select(p => new Models.OrderProduct(p.ProductId, p.ProductAmount, p.ProductName, p.ProductPrice))
+                        .ToArray(),
                 InvoiceAddress = order.InvoiceAddress,
                 InvoiceEmailAddress = order.InvoiceEmailAddress,
                 InvoiceCreditCardNumber = order.InvoiceCreditCardNumber,

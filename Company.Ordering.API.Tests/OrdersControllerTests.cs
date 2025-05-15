@@ -19,7 +19,7 @@ public class OrdersControllerTests
         // Arrange
         var mediatorMock = new Mock<IMediator>();
         var queriesMock = new Mock<IOrderQueries>();
-        var createOrder = new CreateOrder();
+        var createOrder = new CreateOrder("", [], default);
 
         mediatorMock
             .Setup(m => m.Send(createOrder, It.IsAny<CancellationToken>()))

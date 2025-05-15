@@ -3,17 +3,21 @@ using MediatR;
 
 namespace Company.Ordering.API.Commands
 {
-    public class CreateOrder : IRequest<int>
+    public class CreateOrder(string invoiceEmailAddress,
+        IEnumerable<OrderProduct> products,
+        DateTime createdAt,
+        string invoiceAddress = default,
+        string invoiceCreditCardNumber = default) : IRequest<int>
     {
-        public virtual ICollection<OrderProduct> Products { get; set; } = default!;
+        public virtual IEnumerable<OrderProduct> Products => products;
 
-        public string? InvoiceAddress { get; set; }
+        public string? InvoiceAddress => invoiceAddress;
 
-        public string InvoiceEmailAddress { get; set; } = default!;
+        public string InvoiceEmailAddress => InvoiceEmailAddress;
 
-        public string? InvoiceCreditCardNumber { get; set; }
+        public string? InvoiceCreditCardNumber => InvoiceCreditCardNumber;
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt => createdAt;
 
     }
 }

@@ -13,20 +13,9 @@ public class CreateOrderHandlerTests
     public async Task Handle_AssignsOrderNumber_AfterSaveChangesAsync()
     {
         // Arrange
-        var createOrder = new CreateOrder
-        {
-            Products = [
-            new Company.Ordering.API.Models.OrderProduct
-            {
-                ProductId = 1,
-                ProductName = "Test Product",
-                ProductAmount = 2,
-                ProductPrice = 10.0m
-            }],
-            InvoiceAddress = "123 Test St",
-            InvoiceEmailAddress = "test@example.com",
-            InvoiceCreditCardNumber = "4111111111111111"
-        };
+        var createOrder = new CreateOrder("test@example.com", [
+            new Models.OrderProduct(1, 2)],
+            DateTime.UtcNow);
 
         const int newOrderNumber = 42;
 

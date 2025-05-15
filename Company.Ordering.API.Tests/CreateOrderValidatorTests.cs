@@ -17,10 +17,10 @@ public class CreateOrderValidatorTests
         var logger = new Mock<ILogger<CreateOrderValidator>>();
         var orderValidator = new CreateOrderValidator(productsRepository.Object, logger.Object);
 
-        var order = new CreateOrder
-        {
-            InvoiceEmailAddress = "notcorrectemail",
-        };
+        var order = new CreateOrder(
+            "not-a-email",
+            [],
+            DateTime.UtcNow);
 
         //Act
         var validationResult = await orderValidator.ValidateAsync(order);
@@ -43,16 +43,10 @@ public class CreateOrderValidatorTests
         var logger = new Mock<ILogger<CreateOrderValidator>>();
         var orderValidator = new CreateOrderValidator(productsRepository.Object, logger.Object);
 
-        var order = new CreateOrder
-        {
-            Products = [
-                new Models.OrderProduct
-                {
-                    ProductId = 1,
-                    ProductAmount = 2,
-                },
-            ],
-        };
+        var order = new CreateOrder(
+            "email@example.com",
+            [new Models.OrderProduct(1, 2)],
+            DateTime.UtcNow);
 
         //Act
         var validationResult = await orderValidator.ValidateAsync(order);
@@ -68,22 +62,14 @@ public class CreateOrderValidatorTests
         //Arrange
         var productsRepository = new Mock<IProductsRepository>();
 
-        var order = new CreateOrder
-        {
-            InvoiceEmailAddress = "valid@example.com",
-            Products = [
-                new Models.OrderProduct
-                {
-                    ProductId = 1,
-                    ProductAmount = 2,
-                },
-                new Models.OrderProduct
-                {
-                    ProductId = 2,
-                    ProductAmount = 10,
-                },
+        var order = new CreateOrder(
+            "valid@example.com",
+            [
+                new Models.OrderProduct(1,2),
+                new Models.OrderProduct(2,10)
             ],
-        };
+            DateTime.UtcNow
+        );
 
         foreach (var p in order.Products)
         {

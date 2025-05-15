@@ -9,39 +9,30 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Company.Ordering.API.IntegrationTests;
 
-public class OrdersControllerIntegrationTests
-    : IClassFixture<CustomWebApplicationFactory<Program>>
+public class OrdersControllerIntegrationTests(CustomWebApplicationFactory<Program> factory)
+        : IClassFixture<CustomWebApplicationFactory<Program>>
 {
-    private readonly HttpClient _client;
-    private readonly Product _product;
-
-    public OrdersControllerIntegrationTests(CustomWebApplicationFactory<Program> factory)
-    {
-        _client = factory.CreateClient();
-        _product = new Product(2);
-        using var scope = factory.Services.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<OrderingDbContext>()!;
-        dbContext.Products.Add(_product);
-        dbContext.SaveChanges();
-    }
+    private readonly HttpClient _client = factory.CreateClient();
+    private readonly Func<Task<Product>> GetProductAsync = async () =>
+        {
+            var product = new Product(2);
+            using var scope = factory.Services.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<OrderingDbContext>()!;
+            await dbContext.Products.AddAsync(product);
+            await dbContext.SaveChangesAsync();
+            return product;
+        };
 
     [Fact]
     public async Task CreateAndReadOrder()
     {
         // Arrange
-        var createOrder = new CreateOrder
-        {
-            Products =
-            [
-                new Models.OrderProduct
-                {
-                    ProductId = _product.Id,
-                    ProductAmount = 1
-                }
-            ],
-            InvoiceEmailAddress = "test@example.com",
-        };
-
+        var product = await GetProductAsync();
+        var createOrder = new CreateOrder(
+            "test@example.com",
+            [new Models.OrderProduct(product.Id, 1)],
+            DateTime.UtcNow
+            );
         // Act
         var response = await _client.PostAsJsonAsync("/Orders", createOrder);
 
@@ -62,18 +53,11 @@ public class OrdersControllerIntegrationTests
     public async Task CreateOrder_WithInvalidEmail_ReturnsBadRequest()
     {
         // Arrange
-        var createOrder = new CreateOrder
-        {
-            Products =
-            [
-                new Models.OrderProduct
-                {
-                    ProductId = _product.Id,
-                    ProductAmount = 1
-                }
-            ],
-            InvoiceEmailAddress = "not-an-email" // Invalid email format
-        };
+        var product = await GetProductAsync();
+        var createOrder = new CreateOrder(
+            "not-an-email",
+            [new Models.OrderProduct(product.Id, 1)],
+            DateTime.UtcNow);
 
         // Act
         var response = await _client.PostAsJsonAsync("/Orders", createOrder);
@@ -89,18 +73,11 @@ public class OrdersControllerIntegrationTests
     public async Task CreateOrder_WithOutOfStockProduct_ReturnsBadRequest()
     {
         // Arrange
-        var createOrder = new CreateOrder
-        {
-            Products =
-            [
-                new Models.OrderProduct
-                {
-                    ProductId = 12345,
-                    ProductAmount = int.MaxValue // Invalid amount
-                }
-            ],
-            InvoiceEmailAddress = "someone@example.com"
-        };
+        var product = await GetProductAsync();
+        var createOrder = new CreateOrder(
+            "test@example.com",
+            [new Models.OrderProduct(product.Id, int.MaxValue)],
+            DateTime.UtcNow);
 
         // Act
         var response = await _client.PostAsJsonAsync("/Orders", createOrder);
