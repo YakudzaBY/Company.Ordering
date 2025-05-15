@@ -11,7 +11,7 @@ public class ProductsRepositoryTests : InMemoryDbTest
 
     public ProductsRepositoryTests() : base()
     {
-        _product = new Product { Id = 2, Stock = 2 };
+        _product = new Product (2, 2);
         _dbContext.Products.Add(_product);
         _dbContext.SaveChanges();
 

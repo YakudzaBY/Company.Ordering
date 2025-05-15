@@ -9,6 +9,6 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
     public void Configure(EntityTypeBuilder<Product> builder)
     {
         builder.HasKey(p => p.Id);
-        builder.HasData(new Product { Id = 12345, Stock = 2 });
+        builder.HasData(new Product (12345, 2));
     }
 }

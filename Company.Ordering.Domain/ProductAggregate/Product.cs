@@ -2,7 +2,18 @@
 
 public class Product : IAggregateRoot
 {
-    public int Id { get; set; }
+    protected Product()
+    {
 
-    public int Stock { get; set; }
+    }
+
+    public Product(int id, int stock) : this()
+    {
+        Id = id;
+        Stock = stock;
+    }
+
+    public int Id { get; private set; }
+
+    public int Stock { get; private set; }
 }
