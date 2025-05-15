@@ -2,6 +2,7 @@ using Company.Ordering.API.CommandHandlers;
 using Company.Ordering.API.Commands;
 using Company.Ordering.Domain;
 using Company.Ordering.Domain.Aggregates.OrderAggregate;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace Company.Ordering.API.Tests;
@@ -49,8 +50,8 @@ public class CreateOrderHandlerTests
                     capturedOrder.GetType().GetProperty(nameof(Order.Id))!.SetValue(capturedOrder, newOrderNumber);
                 }
             });
-
-        var handler = new CreateOrderHandler(mockRepo.Object);
+        var logger = new Mock<ILogger<CreateOrderHandler>>();
+        var handler = new CreateOrderHandler(mockRepo.Object, logger.Object);
 
         // Act
         var result = await handler.Handle(createOrder, CancellationToken.None);

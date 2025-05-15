@@ -4,7 +4,9 @@ using MediatR;
 
 namespace Company.Ordering.API.CommandHandlers
 {
-    public class CreateOrderHandler(IOrdersRepository ordersRepository)
+    public class CreateOrderHandler(
+        IOrdersRepository ordersRepository,
+        ILogger<CreateOrderHandler> logger)
         : IRequestHandler<CreateOrder, int>
     {
         public async Task<int> Handle(CreateOrder request, CancellationToken cancellationToken)
@@ -22,6 +24,7 @@ namespace Company.Ordering.API.CommandHandlers
                     product.ProductAmount,
                     product.ProductPrice);
             }
+            logger.LogInformation("----- Creating Order");
             await ordersRepository.CreateOrderAsync(order, cancellationToken);
             await ordersRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
             return order.Id;

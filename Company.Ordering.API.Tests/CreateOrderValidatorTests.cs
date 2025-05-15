@@ -1,6 +1,7 @@
 ﻿using Company.Ordering.API.Commands;
 using Company.Ordering.API.Validators;
 using Company.Ordering.Domain.Aggregates.ProductAggregate;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace Company.Ordering.API.Tests;
@@ -13,7 +14,8 @@ public class CreateOrderValidatorTests
         //Arrange
         var productsRepository = new Mock<IProductsRepository>();
 
-        var orderValidator = new CreateOrderValidator(productsRepository.Object);
+        var logger = new Mock<ILogger<CreateOrderValidator>>();
+        var orderValidator = new CreateOrderValidator(productsRepository.Object, logger.Object);
 
         var order = new CreateOrder
         {
@@ -38,7 +40,8 @@ public class CreateOrderValidatorTests
             .Setup(x => x.IsInStock(It.IsAny<int>(), It.IsAny<int>()))
             .ReturnsAsync(false);
 
-        var orderValidator = new CreateOrderValidator(productsRepository.Object);
+        var logger = new Mock<ILogger<CreateOrderValidator>>();
+        var orderValidator = new CreateOrderValidator(productsRepository.Object, logger.Object);
 
         var order = new CreateOrder
         {
@@ -89,8 +92,8 @@ public class CreateOrderValidatorTests
                 .Setup(x => x.IsInStock(p.ProductId, It.IsAny<int>()))
                 .ReturnsAsync(true);
         }
-
-        var orderValidator = new CreateOrderValidator(productsRepository.Object);
+        var logger = new Mock<ILogger<CreateOrderValidator>>();
+        var orderValidator = new CreateOrderValidator(productsRepository.Object, logger.Object);
 
         //Act
         var validationResult = await orderValidator.ValidateAsync(order);

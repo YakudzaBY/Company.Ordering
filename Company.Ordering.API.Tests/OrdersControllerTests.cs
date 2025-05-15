@@ -1,14 +1,11 @@
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using Company.Ordering.API.Commands;
 using Company.Ordering.API.Controllers;
 using Company.Ordering.API.Models;
 using Company.Ordering.API.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
-using Xunit;
 
 namespace Company.Ordering.API.Tests;
 
@@ -27,8 +24,8 @@ public class OrdersControllerTests
         mediatorMock
             .Setup(m => m.Send(createOrder, It.IsAny<CancellationToken>()))
             .ReturnsAsync(orderId);
-
-        var controller = new OrdersController(queriesMock.Object, mediatorMock.Object);
+        var logger = new Mock<ILogger<OrdersController>>();
+        var controller = new OrdersController(queriesMock.Object, mediatorMock.Object, logger.Object);
 
         // Act
         var result = await controller.CreateOrderAsync(createOrder);
@@ -50,7 +47,8 @@ public class OrdersControllerTests
             .Setup(q => q.GetOrderWithProductsAsync(order.OrderNumber, It.IsAny<CancellationToken>()))
             .ReturnsAsync(order);
 
-        var controller = new OrdersController(queriesMock.Object, mediatorMock.Object);
+        var logger = new Mock<ILogger<OrdersController>>();
+        var controller = new OrdersController(queriesMock.Object, mediatorMock.Object, logger.Object);
 
         // Act
         var result = await controller.GetOrderWithProductsAsync(order.OrderNumber);
@@ -69,7 +67,8 @@ public class OrdersControllerTests
             .Setup(q => q.GetOrderWithProductsAsync(orderId, It.IsAny<CancellationToken>()))
             .ReturnsAsync((OrderWithProducts?)null);
 
-        var controller = new OrdersController(queriesMock.Object, mediatorMock.Object);
+        var logger = new Mock<ILogger<OrdersController>>();
+        var controller = new OrdersController(queriesMock.Object, mediatorMock.Object, logger.Object);
 
         // Act
         var result = await controller.GetOrderWithProductsAsync(orderId);

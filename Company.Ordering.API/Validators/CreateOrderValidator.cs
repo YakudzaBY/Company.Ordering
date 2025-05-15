@@ -6,7 +6,8 @@ namespace Company.Ordering.API.Validators;
 
 public class CreateOrderValidator : AbstractValidator<CreateOrder>
 {
-    public CreateOrderValidator(IProductsRepository productRepository)
+    public CreateOrderValidator(IProductsRepository productRepository,
+        ILogger<CreateOrderValidator> logger)
     {
         RuleFor(order => order.InvoiceEmailAddress)
             .NotEmpty()
@@ -20,5 +21,8 @@ public class CreateOrderValidator : AbstractValidator<CreateOrder>
                 return isInStock;
             })
             .WithMessage("The product is out of stock");
+
+
+        logger.LogTrace("----- INSTANCE CREATED - {ClassName}", GetType().Name);
     }
 }

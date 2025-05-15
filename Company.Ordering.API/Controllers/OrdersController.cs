@@ -10,7 +10,8 @@ namespace Company.Ordering.API.Controllers;
 [ApiController]
 public class OrdersController(
     IOrderQueries orderQueries,
-    IMediator mediator)
+    IMediator mediator,
+    ILogger<OrdersController> logger)
     : ControllerBase
 {
     [HttpPost]
@@ -18,6 +19,8 @@ public class OrdersController(
     [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<int>> CreateOrderAsync(CreateOrder request)
     {
+        logger.LogInformation("----- Sending command: {CommandName}", request.GetType());
+
         var orderNumber = await mediator.Send(request);
         return Created($"/{orderNumber}", orderNumber);
     }
