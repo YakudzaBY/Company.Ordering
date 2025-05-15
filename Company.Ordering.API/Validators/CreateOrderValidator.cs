@@ -1,5 +1,5 @@
 ﻿using Company.Ordering.API.Commands;
-using Company.Ordering.Domain.ProductAggregate;
+using Company.Ordering.Domain.Aggregates.ProductAggregate;
 using FluentValidation;
 
 namespace Company.Ordering.API.Validators;

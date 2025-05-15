@@ -1,6 +1,6 @@
 ﻿using Company.Ordering.API.Commands;
 using Company.Ordering.API.Validators;
-using Company.Ordering.Domain.ProductAggregate;
+using Company.Ordering.Domain.Aggregates.ProductAggregate;
 using Moq;
 
 namespace Company.Ordering.API.Tests;

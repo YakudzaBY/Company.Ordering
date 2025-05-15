@@ -1,4 +1,4 @@
-﻿namespace Company.Ordering.Domain.OrderAggregate;
+﻿namespace Company.Ordering.Domain.Aggregates.OrderAggregate;
 
 public interface IOrdersRepository: IRepository<Order>
 {

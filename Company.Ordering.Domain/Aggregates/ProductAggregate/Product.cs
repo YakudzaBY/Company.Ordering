@@ -1,4 +1,4 @@
-﻿namespace Company.Ordering.Domain.ProductAggregate;
+﻿namespace Company.Ordering.Domain.Aggregates.ProductAggregate;
 
 public class Product : Entity, IAggregateRoot
 {

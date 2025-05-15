@@ -1,4 +1,4 @@
-﻿using Company.Ordering.Domain.ProductAggregate;
+﻿using Company.Ordering.Domain.Aggregates.ProductAggregate;
 
 namespace Company.Ordering.Tests;
 

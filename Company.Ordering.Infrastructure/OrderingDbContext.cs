@@ -1,6 +1,6 @@
 ﻿using Company.Ordering.Domain;
-using Company.Ordering.Domain.OrderAggregate;
-using Company.Ordering.Domain.ProductAggregate;
+using Company.Ordering.Domain.Aggregates.OrderAggregate;
+using Company.Ordering.Domain.Aggregates.ProductAggregate;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

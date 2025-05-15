@@ -1,4 +1,4 @@
-﻿using Company.Ordering.Domain.OrderAggregate;
+﻿using Company.Ordering.Domain.Aggregates.OrderAggregate;
 using Microsoft.EntityFrameworkCore;
 
 namespace Company.Ordering.Infrastructure.Repositories;

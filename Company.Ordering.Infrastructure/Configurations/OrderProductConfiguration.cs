@@ -1,5 +1,5 @@
-using Company.Ordering.Domain.OrderAggregate;
-using Company.Ordering.Domain.ProductAggregate;
+using Company.Ordering.Domain.Aggregates.OrderAggregate;
+using Company.Ordering.Domain.Aggregates.ProductAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

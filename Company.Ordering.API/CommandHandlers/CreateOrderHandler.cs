@@ -1,5 +1,5 @@
 ﻿using Company.Ordering.API.Commands;
-using Company.Ordering.Domain.OrderAggregate;
+using Company.Ordering.Domain.Aggregates.OrderAggregate;
 using MediatR;
 
 namespace Company.Ordering.API.CommandHandlers

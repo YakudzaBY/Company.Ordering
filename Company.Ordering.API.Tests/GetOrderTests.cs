@@ -1,11 +1,12 @@
 ﻿using Company.Ordering.API.Queries;
+using Company.Ordering.Domain.Aggregates.OrderAggregate;
 using Company.Ordering.Tests;
 
 namespace Company.Ordering.API.Tests;
 
 public class GetOrderTests : InMemoryDbTestWithProduct
 {
-    private readonly Domain.OrderAggregate.Order _order = new(default, "someone@example.com", default, default);
+    private readonly Order _order = new(default, "someone@example.com", default, default);
 
     private readonly Func<Task<OrderQueries>> GetOrderQueriesAsync;
 

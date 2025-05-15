@@ -1,8 +1,8 @@
 using Company.Ordering.API.Commands;
 using Company.Ordering.API.Queries;
 using Company.Ordering.API.Validators;
-using Company.Ordering.Domain.OrderAggregate;
-using Company.Ordering.Domain.ProductAggregate;
+using Company.Ordering.Domain.Aggregates.OrderAggregate;
+using Company.Ordering.Domain.Aggregates.ProductAggregate;
 using Company.Ordering.Infrastructure;
 using Company.Ordering.Infrastructure.Repositories;
 using FluentValidation;

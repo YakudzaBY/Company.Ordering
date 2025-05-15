@@ -1,7 +1,7 @@
 using Company.Ordering.API.CommandHandlers;
 using Company.Ordering.API.Commands;
 using Company.Ordering.Domain;
-using Company.Ordering.Domain.OrderAggregate;
+using Company.Ordering.Domain.Aggregates.OrderAggregate;
 using Moq;
 
 namespace Company.Ordering.API.Tests;

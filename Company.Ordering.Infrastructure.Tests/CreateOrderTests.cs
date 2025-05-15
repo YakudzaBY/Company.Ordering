@@ -1,4 +1,4 @@
-﻿using Company.Ordering.Domain.OrderAggregate;
+﻿using Company.Ordering.Domain.Aggregates.OrderAggregate;
 using Company.Ordering.Infrastructure.Repositories;
 using Company.Ordering.Tests;
 

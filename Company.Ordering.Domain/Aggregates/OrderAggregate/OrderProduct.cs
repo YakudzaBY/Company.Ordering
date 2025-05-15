@@ -1,4 +1,4 @@
-﻿namespace Company.Ordering.Domain.OrderAggregate;
+﻿namespace Company.Ordering.Domain.Aggregates.OrderAggregate;
 
 public class OrderProduct : Entity
 {

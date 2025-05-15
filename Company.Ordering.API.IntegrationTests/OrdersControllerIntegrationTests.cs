@@ -1,8 +1,8 @@
 using System.Net;
 using System.Net.Http.Json;
 using Company.Ordering.API.Commands;
-using Company.Ordering.Domain.OrderAggregate;
-using Company.Ordering.Domain.ProductAggregate;
+using Company.Ordering.Domain.Aggregates.OrderAggregate;
+using Company.Ordering.Domain.Aggregates.ProductAggregate;
 using Company.Ordering.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;

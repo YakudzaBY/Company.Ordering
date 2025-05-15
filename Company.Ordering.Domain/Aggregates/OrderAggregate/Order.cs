@@ -1,4 +1,6 @@
-﻿namespace Company.Ordering.Domain.OrderAggregate;
+﻿using Company.Ordering.Domain.Events;
+
+namespace Company.Ordering.Domain.Aggregates.OrderAggregate;
 
 public class Order : Entity, IAggregateRoot
 {
@@ -18,6 +20,8 @@ public class Order : Entity, IAggregateRoot
         InvoiceEmailAddress = invoiceEmailAddress;
         InvoiceCreditCardNumber = invoiceCreditCardNumber;
         CreatedAt = createdAt;
+
+        AddDomainEvent(new OrderCreatedDomainEvent(this));
     }
 
     private readonly List<OrderProduct> _products;
@@ -36,5 +40,6 @@ public class Order : Entity, IAggregateRoot
     {
         var product = new OrderProduct(productId, productName, productAmount, productPrice);
         _products.Add(product);
+        AddDomainEvent(new OrderProductAdded(this, product));
     }
 }
