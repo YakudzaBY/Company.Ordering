@@ -69,8 +69,9 @@ erDiagram
         datetime CreatedAt
     }
     ORDER_PRODUCT {
-        int OrderNumber PK, FK
-        int ProductId PK, FK
+        int Id PK
+        int OrderNumber FK
+        int ProductId FK
         string ProductName
         int ProductAmount
         decimal ProductPrice
