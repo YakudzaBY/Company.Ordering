@@ -23,7 +23,7 @@ namespace Company.Ordering.API.CommandHandlers
                     product.ProductPrice);
             }
             await ordersRepository.CreateOrderAsync(order, cancellationToken);
-            await ordersRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+            await ordersRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
             return order.Id;
         }
     }

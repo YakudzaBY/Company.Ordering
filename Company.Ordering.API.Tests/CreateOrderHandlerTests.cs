@@ -40,7 +40,7 @@ public class CreateOrderHandlerTests
 
         mockRepo.SetupGet(r => r.UnitOfWork).Returns(mockUnitOfWork.Object);
 
-        mockUnitOfWork.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()))
+        mockUnitOfWork.Setup(u => u.SaveEntitiesAsync(It.IsAny<CancellationToken>()))
             .Callback(() =>
             {
                 // Simulate DB assigning OrderNumber after save
@@ -48,8 +48,7 @@ public class CreateOrderHandlerTests
                 {
                     capturedOrder.GetType().GetProperty(nameof(Order.Id))!.SetValue(capturedOrder, newOrderNumber);
                 }
-            })
-            .ReturnsAsync(1);
+            });
 
         var handler = new CreateOrderHandler(mockRepo.Object);
 
@@ -58,7 +57,7 @@ public class CreateOrderHandlerTests
 
         // Assert
         mockRepo.Verify(r => r.CreateOrderAsync(It.IsAny<Order>(), It.IsAny<CancellationToken>()), Times.Once);
-        mockUnitOfWork.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+        mockUnitOfWork.Verify(u => u.SaveEntitiesAsync(It.IsAny<CancellationToken>()), Times.Once);
         Assert.Equal(newOrderNumber, result);
     }
 }

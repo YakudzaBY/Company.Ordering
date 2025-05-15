@@ -9,7 +9,7 @@ public class CreateOrderTests: InMemoryDbTestWithProduct
     [Theory]
     [InlineData(1)]
     [InlineData(2)]
-    public async Task CreateOrderWithoutProductsAsync(int amount)
+    public async Task CreateOrderWithoutProductsAsync(int amount, CancellationToken cancellationToken = default)
     {
         //Arrange
         var orders = new Order[amount];
@@ -24,15 +24,16 @@ public class CreateOrderTests: InMemoryDbTestWithProduct
         //Act
         foreach(var order in orders)
         {
-            await repo.CreateOrderAsync(order, CancellationToken.None);
+            await repo.CreateOrderAsync(order, cancellationToken);
         }
-        await repo.UnitOfWork.SaveChangesAsync(CancellationToken.None);
+        await repo.UnitOfWork.SaveEntitiesAsync(cancellationToken);
 
         //Assert
         foreach(var order in orders)
         {
-            var orderFromDb = await dbContext.Orders
-                .FindAsync(order.Id, CancellationToken.None);
+            var orderFromDb = await dbContext
+                .Orders
+                .FindAsync([order.Id], cancellationToken);
 
             Assert.NotNull(orderFromDb);
         }
@@ -41,7 +42,7 @@ public class CreateOrderTests: InMemoryDbTestWithProduct
     [Theory]
     [InlineData(1)]
     [InlineData(2)]
-    public async Task CreateOrderWithSameProductsAsync(int amount)
+    public async Task CreateOrderWithSameProductsAsync(int amount, CancellationToken cancellationToken = default)
     {
         //Arrange
         var orders = new Order[amount];
@@ -59,15 +60,16 @@ public class CreateOrderTests: InMemoryDbTestWithProduct
         //Act
         foreach (var order in orders)
         {
-            await repo.CreateOrderAsync(order, CancellationToken.None);
+            await repo.CreateOrderAsync(order, cancellationToken);
         }
-        await repo.UnitOfWork.SaveChangesAsync(CancellationToken.None);
+        await repo.UnitOfWork.SaveEntitiesAsync(cancellationToken);
 
         //Assert
         foreach (var order in orders)
         {
-            var orderFromDb = await dbContext.Orders
-                .FindAsync(order.Id, CancellationToken.None);
+            var orderFromDb = await dbContext
+                .Orders
+                .FindAsync([order.Id], cancellationToken);
 
             Assert.NotNull(orderFromDb);
         }

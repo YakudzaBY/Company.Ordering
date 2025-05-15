@@ -1,6 +1,8 @@
 ﻿using Company.Ordering.Infrastructure;
+using MediatR;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 
 namespace Company.Ordering.Tests;
 
@@ -14,6 +16,7 @@ public abstract class InMemoryDbTest : IAsyncDisposable, IDisposable
     {
         _connection = new SqliteConnection("DataSource=:memory:");
         var connectionTask = _connection.OpenAsync();
+        var mediatr = new Mock<IMediator>(); //TODO check
 
         GetDbContextAsync = async () =>
         {
@@ -23,7 +26,7 @@ public abstract class InMemoryDbTest : IAsyncDisposable, IDisposable
                 .UseSqlite(_connection)
                 .Options;
 
-            var dbContext = new OrderingDbContext(dbContextOptions);
+            var dbContext = new OrderingDbContext(dbContextOptions, mediatr.Object);
 
             await dbContext.Database.EnsureCreatedAsync();
             return dbContext;
