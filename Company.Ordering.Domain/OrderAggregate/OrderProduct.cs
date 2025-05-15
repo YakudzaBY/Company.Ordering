@@ -2,8 +2,6 @@
 
 public class OrderProduct
 {
-    public int OrderNumber { get; set; }
-
     public int ProductId { get; set; }
 
     public string? ProductName { get; set; }

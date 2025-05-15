@@ -7,13 +7,15 @@ namespace Company.Ordering.Infrastructure.Configurations;
 
 public class OrderProductConfiguration : IEntityTypeConfiguration<OrderProduct>
 {
+    const string OrderNumberFieldName = "OrderNumber";
+
     public void Configure(EntityTypeBuilder<OrderProduct> builder)
     {
-        builder.HasKey(op => new { op.OrderNumber, op.ProductId });
+        builder.HasKey(OrderNumberFieldName, nameof(OrderProduct.ProductId));
 
         builder.HasOne<Order>()
                .WithMany(o => o.Products)
-               .HasForeignKey(op => op.OrderNumber)
+               .HasForeignKey(OrderNumberFieldName)
                .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne<Product>()

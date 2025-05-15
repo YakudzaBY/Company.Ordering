@@ -44,8 +44,8 @@ namespace Company.Ordering.Infrastructure.Migrations
                 name: "OrderProduct",
                 columns: table => new
                 {
-                    OrderNumber = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
+                    OrderNumber = table.Column<int>(type: "int", nullable: false),
                     ProductName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProductAmount = table.Column<int>(type: "int", nullable: false),
                     ProductPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
