@@ -142,7 +142,7 @@ Microsoft recommends to use InMemory SQLite as well.
 
 #### Integration Testing
 Implemented in `Company.Ordering.API.IntegrationTests` using [Microsoft recommendation](https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-9.0). 
-They test 2 required endpoints with all explicitly mentioned cases using real database.
+It tests 2 required endpoints with all explicitly mentioned cases using real database.
 Database for Integration Testing can be customized using environment specific configuration file, for example `appsettings.IntegrationTest.json`.
-In order for it work correct [ASP.NET environment](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/environments?view=aspnetcore-9.0) must be specified.
+[ASP.NET environment](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/environments?view=aspnetcore-9.0) must be specified to ensure it's correct working.
 Please note, that Database being recreated at the begining of each test run. This way it's possible to check DB state after test run.
