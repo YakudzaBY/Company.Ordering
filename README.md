@@ -9,12 +9,17 @@
 - Used Controllers instead of minimal APIs for better structure and separation of concerns due to required DDD patern.
 - Enlisted in .NET Aspire orchestration for better monitoring and observability.
 ```mermaid
+---
+config:
+  theme: redux-dark-color
+---
 sequenceDiagram
     actor User
     box API
     participant ASP.NET
     participant Validation as FluentValidation
     participant Controller
+    participant Queries
     participant MediatR
     participant CommandHandler
     participant Repository
@@ -24,7 +29,7 @@ sequenceDiagram
     ASP.NET-)Validation: Is Order Valid
     Validation-)Repository: Is Product in Stock?
     Repository-)DbContext: Is Product in Stock?
-    DbContext-)DB: Is Product in Stock?
+    DbContext-)DB: EXISTS(SELECT From Products)?
     DB--)DbContext: Yes
     DbContext--)Repository: Yes
     Repository--)Validation: Yes
@@ -44,6 +49,16 @@ sequenceDiagram
     MediatR--)Controller: Order.Id
     Controller--)ASP.NET: Order.Id and Location
     ASP.NET--)User: 204 /Order.Id
+    User-)ASP.NET: GET Order
+    ASP.NET-)Controller: GetOrderWithProductsAsync
+    Controller-)Queries: GetOrderWithProductsAsync
+    Queries-)DbContext: Get NoTracking Order with Products
+    DbContext-)DB: SELECT Order, SELECT OrderProducts
+    DB--)DbContext: SELECT Order
+    DbContext--)Queries: Order.Products
+    Queries--)Controller: OrderWithProducts
+    Controller--)ASP.NET: OrderWithProducts
+    ASP.NET--)User: 200 OrderWithProducts
 ```
 ### Domain Driven Design
 To follow DDD implemented following solution structure:
