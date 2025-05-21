@@ -22,8 +22,12 @@ sequenceDiagram
     end
     User->>ASP.NET: POST Order
     ASP.NET-)Validation: Is Order Valid
-    Validation-)DB: Product in Stock?
-    DB--)Validation: 
+    Validation-)Repository: Is Product in Stock?
+    Repository-)DbContext: Is Product in Stock?
+    DbContext-)DB: Is Product in Stock?
+    DB--)DbContext: Yes
+    DbContext--)Repository: Yes
+    Repository--)Validation: Yes
     Validation--)ASP.NET: Valid
     ASP.NET-)Controller: SaveOrderAsync
     Controller-)MediatR: Send CreateOrder
