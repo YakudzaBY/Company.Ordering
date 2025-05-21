@@ -13,9 +13,9 @@ namespace Company.Ordering.API.Commands
 
         public string? InvoiceAddress => invoiceAddress;
 
-        public string InvoiceEmailAddress => InvoiceEmailAddress;
+        public string InvoiceEmailAddress => invoiceEmailAddress;
 
-        public string? InvoiceCreditCardNumber => InvoiceCreditCardNumber;
+        public string? InvoiceCreditCardNumber => invoiceCreditCardNumber;
 
         public DateTime CreatedAt => createdAt;
 
