@@ -74,7 +74,7 @@ sequenceDiagram
 ```
 ### Domain Driven Design
 To follow DDD implemented following solution structure:
-- **Aplication Layer (`Company.Ordering.API`)**: Exposes HTTP endpoints, handles requests via controllers, and uses MediatR for command/query dispatching.
+- **Application Layer (`Company.Ordering.API`)**: Exposes HTTP endpoints, handles requests via controllers, and uses MediatR for command/query dispatching.
 - **Domain Layer (`Company.Ordering.Domain`)**: Contains core business logic, entities, and validation (e.g., `Order`, `OrderValidator`).
 - **Infrastructure Layer (`Company.Ordering.Infrastructure`)**: Implements data access using Entity Framework Core and repository patterns.
 ```mermaid
@@ -118,7 +118,7 @@ erDiagram
 ### Validation
 Used FluentValidation as required.
 As a bonus it allows to use Async validation for checking product stock.
-Downside is that it can't be used for some layers, for example to detalize database model with Code-First approach. For exaample by specifying length, precision of the apropriate fields.
+Downside is that it can't be used for some layers, for example to detalize database model with Code-First approach. For exaample by specifying length, precision of the appropriate fields.
 
 ### Logging
 Used Serilog as required.
