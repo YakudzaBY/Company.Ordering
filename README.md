@@ -25,40 +25,52 @@ sequenceDiagram
     participant Repository
     participant DbContext
     end
-    User->>ASP.NET: POST Order
+    User-)ASP.NET: POST Order
     ASP.NET-)Validation: Is Order Valid
     Validation-)Repository: Is Product in Stock?
     Repository-)DbContext: Is Product in Stock?
     DbContext-)DB: EXISTS(SELECT From Products)?
-    DB--)DbContext: Yes
-    DbContext--)Repository: Yes
-    Repository--)Validation: Yes
-    Validation--)ASP.NET: Valid
-    ASP.NET-)Controller: SaveOrderAsync
-    Controller-)MediatR: Send CreateOrder
-    MediatR-)CommandHandler: Handle CreateOrder
-    CommandHandler-)Repository: AddOrderAsync
-    Repository-)DbContext: Add Order
-    DbContext-)Repository: Order Added
-    CommandHandler-)DbContext: SaveChangesAsync
-    DbContext-)DB: INSERT Order with Products
-    DB--)DbContext: Inserted Order.Id
-    DbContext--)Repository: Order.Id
-    Repository--)CommandHandler: Order.Id
-    CommandHandler--)MediatR: Order.Id
-    MediatR--)Controller: Order.Id
-    Controller--)ASP.NET: Order.Id and Location
-    ASP.NET--)User: 204 /Order.Id
-    User-)ASP.NET: GET Order
-    ASP.NET-)Controller: GetOrderWithProductsAsync
-    Controller-)Queries: GetOrderWithProductsAsync
-    Queries-)DbContext: Get NoTracking Order with Products
-    DbContext-)DB: SELECT Order, SELECT OrderProducts
-    DB--)DbContext: SELECT Order
-    DbContext--)Queries: Order.Products
-    Queries--)Controller: OrderWithProducts
-    Controller--)ASP.NET: OrderWithProducts
-    ASP.NET--)User: 200 OrderWithProducts
+    DB--)DbContext: Yes/No
+    DbContext--)Repository: Yes/No
+    Repository--)Validation: Yes/No
+    Validation--)ASP.NET: Yes/No
+    alt Invalid Order
+        ASP.NET --) User:400 Invalid Order
+    else Valid Order
+        ASP.NET-)Controller: SaveOrderAsync
+        Controller-)MediatR: Send CreateOrder
+        MediatR-)CommandHandler: Handle CreateOrder
+        CommandHandler-)Repository: AddOrderAsync
+        Repository-)DbContext: Add Order
+        DbContext-)Repository: Order Added
+        CommandHandler-)DbContext: SaveChangesAsync
+        DbContext-)DB: INSERT Order with Products
+        DB--)DbContext: Inserted Order.Id
+        DbContext--)Repository: Order.Id
+        Repository--)CommandHandler: Order.Id
+        CommandHandler--)MediatR: Order.Id
+        MediatR--)Controller: Order.Id
+        Controller--)ASP.NET: Order.Id and Location
+        ASP.NET--)User: 204 /Order.Id
+    end
+    User--)ASP.NET: GET Order/Id
+    alt OrderId is not a number
+        ASP.NET--)User: 400
+    else OrderId is number
+        ASP.NET-)Controller: GetOrderWithProductsAsync
+        Controller-)Queries: GetOrderWithProductsAsync
+        Queries-)DbContext: Get NoTracking Order with Products
+        DbContext-)DB: SELECT Order, SELECT OrderProducts
+        DB--)DbContext: SELECT Order
+        DbContext--)Queries: Order.Products
+        Queries--)Controller: OrderWithProducts
+        Controller--)ASP.NET: OrderWithProducts
+        alt Order Exists
+            ASP.NET--)User: 200 OrderWithProducts
+        else Order does not Exist
+            ASP.NET--)User: 204
+        end
+    end
 ```
 ### Domain Driven Design
 To follow DDD implemented following solution structure:
