@@ -125,7 +125,7 @@ or any other tool.
 #### Unit Testing
 **Application Layer** `Company.Ordering.API.Tests` created using xUnit (as required) mocking dependcies using Moq.
 
-**Domain Layer** `Company.Ordering.Domain.Tests` at the moment do not contain any logic, just interfaces.
+**Domain Layer** at the moment do not contain any logic, just interfaces.
 No tests had been created for it.
 
 **Infrastructure layer** tests `Company.Ordering.Infrastructure.Tests` implemneted with slightly bigger scope .
